@@ -2,6 +2,15 @@ appId: com.ensemble.app
 productName: Ensemble
 directories:
   output: release
+  buildResources: build
+icon: build/icon.png
+extraResources:
+  - from: build/icon.png
+    to: icon.png
+publish:
+  provider: github
+  owner: kuarezma
+  repo: ensemble-ai
 files:
   - out/**/*
   - bin/**/*
@@ -9,14 +18,20 @@ files:
   - catalog/**/*
   - package.json
 mac:
+  icon: build/icon.png
+  artifactName: Ensemble-${version}-${arch}.${ext}
   target:
     - target: dmg
       arch: [x64, arm64]
+    - target: zip
+      arch: [x64, arm64]
 win:
+  icon: build/icon.png
   target:
     - target: nsis
       arch: [x64]
 linux:
+  icon: build/icon.png
   target:
     - target: AppImage
       arch: [x64]

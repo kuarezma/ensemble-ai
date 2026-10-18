@@ -12,7 +12,19 @@ export type Preview = {
   files: { path: string; diff: string }[];
   exports: { tool: string; content: string; reason: string }[];
 };
+export type UpdateState = {
+  currentVersion: string;
+  enabled: boolean;
+  status:
+    'idle' | 'dev' | 'checking' | 'up-to-date' | 'downloading' | 'ready' | 'available' | 'error';
+  version?: string;
+  percent?: number;
+};
+export type UpdateAction =
+  | { type: 'status' | 'check' | 'restart' | 'download' | 'notes' }
+  | { type: 'configure'; enabled: boolean };
 export interface EnsembleAPI {
+  update(action: UpdateAction): Promise<UpdateState>;
   catalog(): Promise<Catalog>;
   plan(input: EngineInput): Promise<Plan>;
   preview(tools: string[]): Promise<Preview>;

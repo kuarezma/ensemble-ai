@@ -11,7 +11,7 @@ jobs:
       matrix:
         include:
           - os: macos-latest
-            target: --mac --x64
+            target: --mac --x64 --arm64
           - os: windows-latest
             target: --win --x64
           - os: ubuntu-latest
@@ -32,14 +32,35 @@ jobs:
       - run: npm run lint
       - run: npm run typecheck
       - run: npm run dist -- ${{ matrix.target }} --publish never --config.extraMetadata.homepage=https://github.com/${{ github.repository }}
+      - name: Verify macOS update metadata includes both architectures
+        if: runner.os == 'macOS'
+        shell: bash
+        run: |
+          node --input-type=module <<'JS'
+          import assert from 'node:assert/strict';
+          import { readFileSync, existsSync } from 'node:fs';
+          const metadata = readFileSync('release/latest-mac.yml', 'utf8');
+          const version = JSON.parse(readFileSync('package.json', 'utf8')).version;
+          for (const arch of ['x64', 'arm64']) {
+            const archive = `Ensemble-${version}-${arch}.zip`;
+            assert(metadata.includes(archive), `Missing ${arch} ZIP in latest-mac.yml`);
+            assert(existsSync(`release/${archive}`), `Missing ${arch} ZIP artifact`);
+          }
+          console.log('macOS metadata: x64 + arm64 ZIPs verified');
+          JS
       - uses: actions/upload-artifact@v4
         with:
           name: installers-${{ matrix.os }}
           path: |
             release/*.dmg
+            release/*.zip
             release/*.exe
             release/*.AppImage
             release/*.deb
+            release/latest.yml
+            release/latest-mac.yml
+            release/latest-linux.yml
+            release/*.blockmap
           if-no-files-found: error
   publish:
     needs: installers

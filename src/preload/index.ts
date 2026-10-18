@@ -1,6 +1,7 @@
 import { contextBridge, ipcRenderer } from 'electron';
 import type { EnsembleAPI } from '../shared/api.js';
 const api: EnsembleAPI = {
+  update: (action) => ipcRenderer.invoke('ensemble:update', action),
   catalog: () => ipcRenderer.invoke('ensemble:catalog'),
   plan: (input) => ipcRenderer.invoke('ensemble:plan', input),
   preview: (tools) => ipcRenderer.invoke('ensemble:preview', tools),

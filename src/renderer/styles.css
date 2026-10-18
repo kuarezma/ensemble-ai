@@ -952,3 +952,18 @@ summary:focus .term [role='tooltip'] {
     gap: 6px;
   }
 }
+
+.brand-mark svg {
+  display: block;
+}
+.update-banner p {
+  margin: 0 0 8px;
+}
+.update-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.update-settings > button + button {
+  margin-left: 8px;
+}

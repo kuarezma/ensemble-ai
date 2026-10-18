@@ -62,3 +62,43 @@ Tests use os.tmpdir(), clean up their fixtures and never infer or write a real H
 engine rules/profiles/locks, exact source numbers, real recorded parser payloads, stale previews,
 revert conflicts, simulated write failure/rollback, prepared recovery, symlink/path defenses, CLI and
 consented cached refresh. Renderer, i18n and wizard smoke checks are deferred together to Phase B.
+
+## Phase E: icons, updates and release metadata
+
+The source brand is `build/icon.svg`; `build/icon.png` is its 1024×1024 raster counterpart.
+`directories.buildResources` and explicit macOS/Windows/Linux icon settings use that PNG.
+Electron-builder converts it into the platform icon formats; the renderer uses the same E
+geometry and Windows/Linux BrowserWindow uses the bundled PNG at runtime.
+
+The updater is an injectable main-process state machine in `src/main/updater.ts`, exposed
+through validated IPC and a minimal preload API. Development is a no-op. The automatic-check
+preference defaults on, is explained on Welcome/Settings and persists in userData config.
+Enabled packaged apps check after 10 seconds and every six hours; a manual check is separate.
+Downloads run in the background; installation/restart always requires an explicit user click.
+Windows NSIS and Linux AppImage support installation. Current unsigned macOS builds and Linux
+`.deb` installations use the latest-release download fallback instead. macOS installation is enabled
+only after codesign verification and a Developer ID Application authority check; signing errors also
+fall back safely. Opening release/download links is restricted by an explicit GitHub URL allow-list.
+The updater's dedicated Electron network partition strips the library's persistent staging-ID
+header, cookies and credentials before sending requests, and blocks destinations outside this
+repository's GitHub release endpoints and GitHub release-asset CDN paths. State polling in the
+renderer uses only local IPC and never checks the network. No telemetry is introduced. The GitHub provider reads public release metadata/assets from
+`github.com/kuarezma/ensemble-ai`; GitHub may redirect asset downloads to its release-asset
+CDN. This is separate from the existing consented Artificial Analysis refresh traffic.
+
+`electron-builder.yml` fixes the public GitHub provider to `kuarezma/ensemble-ai`. The tag
+workflow uses `--publish never`: electron-builder generates update metadata locally, and the
+existing release upload step publishes installers, ZIP payloads, `latest.yml`, `latest-mac.yml`,
+`latest-linux.yml` and blockmaps together. No builder-side publishing/token flow is needed.
+
+macOS x64 and arm64 are built **in one job and one electron-builder invocation**, with both
+DMG and ZIP targets. Artifact names contain the architecture. The builder merges both
+architectures' files into one `latest-mac.yml` in that invocation, avoiding competing metadata
+from separate jobs overwriting each other. The macOS job verifies both architecture ZIP
+names occur in the metadata and both ZIPs exist before upload. ZIP is required by Squirrel.Mac,
+even though users normally install the DMG; retaining it also supports a future signed release.
+This follows the [electron-builder v26 auto-update requirements](https://www.electron.build/v26/docs/features/auto-update/).
+The architecture-selection behavior and merged metadata are also covered by the installed
+builder's `publish/updateInfoBuilder` and updater's `MacUpdater` implementations.
+Actual installer/update behavior remains unverified until two versions have been published
+and tested on the target platforms; macOS signing/notarization is not added in this phase.

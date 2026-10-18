@@ -72,6 +72,8 @@ try {
     page.on('console', (msg) => {
       if (msg.type() === 'error') errors.push(msg.text());
     });
+    let update = { currentVersion: '0.1.1', enabled: true, status: 'idle' };
+    let restartCount = 0;
     let plan,
       pending,
       sequence = 0;
@@ -84,6 +86,13 @@ try {
     };
     await page.exposeFunction('ensembleInvoke', async (method, args) => {
       switch (method) {
+        case 'update': {
+          const action = args[0];
+          if (action.type === 'configure') update.enabled = action.enabled;
+          if (action.type === 'check') update.status = 'checking';
+          if (action.type === 'restart') restartCount++;
+          return { ...update };
+        }
         case 'catalog':
           return { models, tools, subscriptions, platform: 'linux', sandbox: true };
         case 'plan':
@@ -127,9 +136,17 @@ try {
     });
     await page.addInitScript(() => {
       window.ensemble = Object.fromEntries(
-        ['catalog', 'plan', 'preview', 'apply', 'revert', 'refresh', 'copy', 'setKey'].map(
-          (method) => [method, (...args) => window.ensembleInvoke(method, args)],
-        ),
+        [
+          'catalog',
+          'plan',
+          'preview',
+          'apply',
+          'revert',
+          'refresh',
+          'copy',
+          'setKey',
+          'update',
+        ].map((method) => [method, (...args) => window.ensembleInvoke(method, args)]),
       );
     });
     async function inspect(state) {
@@ -181,6 +198,39 @@ try {
     await page.getByRole('button', { name: /Settings/ }).click();
     await page.getByRole('combobox', { name: 'Appearance' }).selectOption('dark');
     await inspect('07-settings-dark');
+    await page.getByRole('checkbox', { name: 'Check for updates automatically' }).uncheck();
+    if (update.enabled !== false) throw new Error('Update opt-out not persisted');
+    await page.getByRole('button', { name: 'Check now', exact: true }).click();
+    await page.getByTestId('update-status').filter({ hasText: 'Checking for updates' }).waitFor();
+    await inspect('10-update-checking');
+    for (const [name, next, text] of [
+      ['11-update-current', { status: 'up-to-date' }, 'You are up to date.'],
+      ['12-update-downloading', { status: 'downloading', percent: 43 }, 'Downloading update 43%'],
+      ['13-update-ready', { status: 'ready', version: '0.1.2' }, 'Ready to restart: 0.1.2'],
+    ]) {
+      update = { ...update, ...next };
+      await page.getByTestId('update-status').filter({ hasText: text }).waitFor();
+      await inspect(name);
+    }
+    if (restartCount) throw new Error('Restart before explicit click');
+    await page.getByRole('button', { name: 'Later', exact: true }).click();
+    if (
+      await page
+        .getByText('Update ready: version 0.1.2. Restart to update', { exact: true })
+        .count()
+    )
+      throw new Error('Later did not dismiss banner');
+    await page.getByRole('button', { name: 'Restart now', exact: true }).click();
+    if (restartCount !== 1) throw new Error('Restart action missing');
+    update = { ...update, status: 'error' };
+    await page
+      .getByTestId('update-status')
+      .filter({ hasText: 'Could not check or install' })
+      .waitFor();
+    await inspect('14-update-error');
+    update = { ...update, status: 'available' };
+    await page.getByTestId('update-status').filter({ hasText: 'New version available:' }).waitFor();
+    await inspect('15-update-fallback');
     await page.getByRole('button', { name: 'Refresh model data' }).click();
     await page.getByRole('heading', { name: 'New models need your confirmation' }).waitFor();
     const fresh = page.getByRole('group', { name: 'New research model' });

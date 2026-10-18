@@ -1,10 +1,11 @@
-# Ensemble
+# <img src="build/icon.svg" width="48" height="48" alt="" /> Ensemble
 
 A desktop model-allocation wizard and reversible tool-rule writer. Choose your tools,
 pick a profile, review your six-role crew, preview changes, then explicitly Apply.
 English is the default; Turkish is selectable. Settings include system/light/dark themes,
 optional data refresh, session-encrypted API keys, and clipboard plan/rules export.
-The core has no Electron or DOM imports, no telemetry, no implicit HOME lookup and no automatic network activity.
+The core has no Electron or DOM imports, no telemetry and no implicit HOME lookup.
+Packaged apps can check GitHub Releases for updates when automatic update checks are enabled.
 
 ## Setup and checks
 
@@ -51,13 +52,16 @@ PLAYWRIGHT_BROWSERS_PATH="$PWD/.dev-data/playwright" npm run ui:gate
 ```
 
 The headless gate serves the **built** renderer with a mocked preload connected to the real core
-using a disposable project-local home. It checks 9 states at each of 360/390/768/1280 pixels
-(36 cases): five wizard screens, success/revert, settings, provisional-model plan review,
-and Turkish/dark mode. Every case checks `scrollWidth <= clientWidth`, zero serious/critical
+using a disposable project-local home. It checks 15 states at each of 360/390/768/1280 pixels
+(60 cases): five wizard screens, success/revert, settings, provisional-model plan review,
+Turkish/dark mode, and update checking/current/downloading/ready/error/download-fallback states.
+The update checks also exercise Later and explicit Restart. Every case checks `scrollWidth <= clientWidth`, zero serious/critical
 axe violations, and browser console/page errors. Apply/revert exercises real core writes only
 inside that disposable home. Screenshots and machine-readable results go to
 [docs/screenshots](docs/screenshots/); Ubuntu CI uploads that directory as an artifact.
-A passing local gate inserts selected screenshots below automatically.
+A passing local gate inserts selected screenshots below automatically. The Phase E local run was
+blocked before Chromium opened by the macOS sandbox (`bootstrap_check_in Permission denied (1100)`);
+the existing screenshots below are from an earlier run, not Phase E visual proof.
 
 <!-- ENSEMBLE:UI-SCREENSHOTS:BEGIN -->
 ![Welcome at desktop width](docs/screenshots/1280-01-welcome.png)
@@ -71,6 +75,22 @@ Windows/Linux real-device behavior, native Electron runtime, actual release jobs
 Artificial Analysis API/keychain interaction, installer generation, signing and notarization
 have not been verified here. The source implements those integrations but does not claim
 successful runtime or packaging proof.
+
+## Updates
+
+Ensemble 0.1.1 and later check GitHub Releases 10 seconds after startup and every six hours
+when **Check for updates automatically** is on (the default). The Welcome screen explains
+this consent beside model-data refresh; Settings can turn it off or **Check now** manually.
+Development runs never check. No telemetry is sent; update traffic uses GitHub release
+metadata and assets, independently of optional Artificial Analysis model-data refresh.
+
+Windows NSIS and Linux AppImage download updates in the background. A quiet banner shows
+the version, release notes, **Restart now** and **Later** once ready; Ensemble never restarts
+without your click. Current macOS builds are **unsigned**, so Squirrel.Mac cannot install
+updates: macOS shows a **Download** link to the [latest release](https://github.com/kuarezma/ensemble-ai/releases/latest)
+instead. Linux `.deb` installations also use this manual download fallback.
+**Version 0.1.0 users must install 0.1.1 manually once** to receive the updater.
+A real end-to-end update requires two published versions; local checks cannot prove it.
 
 ## CLI
 
@@ -155,4 +175,20 @@ klasörü kullanılır. Doğrulanamayan 22 istemci için dosyaya otomatik yazıl
 
 Masaüstü uygulamasındaki Geri Al, oturumda uygulanan işlemleri geri alır. Yeniden başlatma sonrası
 yedek manifesti ile CLI kullanılabilir. Yerel Playwright kapısı macOS sandbox izni nedeniyle
-0/36 ekran durumunda kaldı; ekran görüntüsü ve erişilebilirlik sonucu doğrulanmış sayılmaz.
+0/60 ekran durumunda kaldı; ekran görüntüsü ve erişilebilirlik sonucu doğrulanmış sayılmaz.
+
+### Güncellemeler
+
+0.1.1 ve sonraki sürümler, varsayılan olarak açık olan **Güncellemeleri otomatik denetle**
+ayarıyla başlangıçtan 10 saniye sonra ve altı saatte bir GitHub sürümlerini kontrol eder.
+Bu izin Hoş geldiniz adımında veri yenileme izninin yanında açıklanır; Ayarlar'dan kapatılabilir
+veya **Şimdi kontrol et** ile elle kontrol edilebilir. Geliştirmede kontrol yapılmaz.
+Telemetri yoktur; güncelleme istekleri GitHub sürüm bilgileri ve dosyaları içindir.
+
+Windows NSIS ve Linux AppImage güncellemeleri arka planda indirir. Hazır olduğunda sürüm,
+sürüm notları, **Şimdi yeniden başlat** ve **Sonra** seçenekleri gösterilir; açık tıklama olmadan
+uygulama yeniden başlamaz. macOS paketleri şu anda **imzasızdır**; Squirrel.Mac otomatik kurulum
+yapamadığından [son sürümü indir](https://github.com/kuarezma/ensemble-ai/releases/latest) bağlantısı
+sunulur. Linux `.deb` kurulumları da elle indirme yolunu kullanır.
+**0.1.0 kullanıcıları, güncelleyiciyi edinmek için 0.1.1'i bir kez elle kurmalıdır.**
+Gerçek uçtan uca güncelleme, yayımlanmış iki sürüm gerektirir; yerel kontroller bunu kanıtlamaz.

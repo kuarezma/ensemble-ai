@@ -1,6 +1,6 @@
 {
   "status": "passed",
-  "cases": 36,
+  "cases": 60,
   "applyCount": 4,
   "revertCount": 4,
   "consoleErrors": [],
@@ -63,6 +63,54 @@
     },
     {
       "width": 360,
+      "state": "10-update-checking",
+      "scrollWidth": 360,
+      "clientWidth": 360,
+      "serious": 0,
+      "violations": []
+    },
+    {
+      "width": 360,
+      "state": "11-update-current",
+      "scrollWidth": 360,
+      "clientWidth": 360,
+      "serious": 0,
+      "violations": []
+    },
+    {
+      "width": 360,
+      "state": "12-update-downloading",
+      "scrollWidth": 360,
+      "clientWidth": 360,
+      "serious": 0,
+      "violations": []
+    },
+    {
+      "width": 360,
+      "state": "13-update-ready",
+      "scrollWidth": 360,
+      "clientWidth": 360,
+      "serious": 0,
+      "violations": []
+    },
+    {
+      "width": 360,
+      "state": "14-update-error",
+      "scrollWidth": 360,
+      "clientWidth": 360,
+      "serious": 0,
+      "violations": []
+    },
+    {
+      "width": 360,
+      "state": "15-update-fallback",
+      "scrollWidth": 360,
+      "clientWidth": 360,
+      "serious": 0,
+      "violations": []
+    },
+    {
+      "width": 360,
       "state": "08-refresh-diff-dark",
       "scrollWidth": 360,
       "clientWidth": 360,
@@ -135,6 +183,54 @@
     },
     {
       "width": 390,
+      "state": "10-update-checking",
+      "scrollWidth": 390,
+      "clientWidth": 390,
+      "serious": 0,
+      "violations": []
+    },
+    {
+      "width": 390,
+      "state": "11-update-current",
+      "scrollWidth": 390,
+      "clientWidth": 390,
+      "serious": 0,
+      "violations": []
+    },
+    {
+      "width": 390,
+      "state": "12-update-downloading",
+      "scrollWidth": 390,
+      "clientWidth": 390,
+      "serious": 0,
+      "violations": []
+    },
+    {
+      "width": 390,
+      "state": "13-update-ready",
+      "scrollWidth": 390,
+      "clientWidth": 390,
+      "serious": 0,
+      "violations": []
+    },
+    {
+      "width": 390,
+      "state": "14-update-error",
+      "scrollWidth": 390,
+      "clientWidth": 390,
+      "serious": 0,
+      "violations": []
+    },
+    {
+      "width": 390,
+      "state": "15-update-fallback",
+      "scrollWidth": 390,
+      "clientWidth": 390,
+      "serious": 0,
+      "violations": []
+    },
+    {
+      "width": 390,
       "state": "08-refresh-diff-dark",
       "scrollWidth": 390,
       "clientWidth": 390,
@@ -207,6 +303,54 @@
     },
     {
       "width": 768,
+      "state": "10-update-checking",
+      "scrollWidth": 768,
+      "clientWidth": 768,
+      "serious": 0,
+      "violations": []
+    },
+    {
+      "width": 768,
+      "state": "11-update-current",
+      "scrollWidth": 768,
+      "clientWidth": 768,
+      "serious": 0,
+      "violations": []
+    },
+    {
+      "width": 768,
+      "state": "12-update-downloading",
+      "scrollWidth": 768,
+      "clientWidth": 768,
+      "serious": 0,
+      "violations": []
+    },
+    {
+      "width": 768,
+      "state": "13-update-ready",
+      "scrollWidth": 768,
+      "clientWidth": 768,
+      "serious": 0,
+      "violations": []
+    },
+    {
+      "width": 768,
+      "state": "14-update-error",
+      "scrollWidth": 768,
+      "clientWidth": 768,
+      "serious": 0,
+      "violations": []
+    },
+    {
+      "width": 768,
+      "state": "15-update-fallback",
+      "scrollWidth": 768,
+      "clientWidth": 768,
+      "serious": 0,
+      "violations": []
+    },
+    {
+      "width": 768,
       "state": "08-refresh-diff-dark",
       "scrollWidth": 768,
       "clientWidth": 768,
@@ -272,6 +416,54 @@
     {
       "width": 1280,
       "state": "07-settings-dark",
+      "scrollWidth": 1280,
+      "clientWidth": 1280,
+      "serious": 0,
+      "violations": []
+    },
+    {
+      "width": 1280,
+      "state": "10-update-checking",
+      "scrollWidth": 1280,
+      "clientWidth": 1280,
+      "serious": 0,
+      "violations": []
+    },
+    {
+      "width": 1280,
+      "state": "11-update-current",
+      "scrollWidth": 1280,
+      "clientWidth": 1280,
+      "serious": 0,
+      "violations": []
+    },
+    {
+      "width": 1280,
+      "state": "12-update-downloading",
+      "scrollWidth": 1280,
+      "clientWidth": 1280,
+      "serious": 0,
+      "violations": []
+    },
+    {
+      "width": 1280,
+      "state": "13-update-ready",
+      "scrollWidth": 1280,
+      "clientWidth": 1280,
+      "serious": 0,
+      "violations": []
+    },
+    {
+      "width": 1280,
+      "state": "14-update-error",
+      "scrollWidth": 1280,
+      "clientWidth": 1280,
+      "serious": 0,
+      "violations": []
+    },
+    {
+      "width": 1280,
+      "state": "15-update-fallback",
       "scrollWidth": 1280,
       "clientWidth": 1280,
       "serious": 0,

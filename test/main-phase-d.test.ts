@@ -5,6 +5,7 @@ import { pathToFileURL } from 'node:url';
 import { rendererCSP } from '../src/main/security.js';
 import { MAX_RESPONSE_BYTES } from '../src/core/aa/refresh.js';
 const electron = vi.hoisted(() => ({
+  updateHeaders: vi.fn(),
   handlers: new Map<string, (event: unknown, raw: unknown) => unknown>(),
   headers: undefined as
     | undefined
@@ -19,9 +20,14 @@ const electron = vi.hoisted(() => ({
     session: { setPermissionRequestHandler: vi.fn(), webRequest: { onHeadersReceived: vi.fn() } },
   },
 }));
+vi.mock('electron-updater', () => ({
+  default: { autoUpdater: { setFeedURL: vi.fn(), on: vi.fn(), removeListener: vi.fn() } },
+}));
 vi.mock('electron', () => ({
   app: {
     isPackaged: true,
+    getVersion: () => '0.1.1',
+    getAppPath: () => '/unused/app.asar',
     setPath: vi.fn(),
     setAppLogsPath: vi.fn(),
     getPath: () => '/unused',
@@ -51,6 +57,10 @@ vi.mock('electron', () => ({
     decryptString: (value: Buffer) => value.toString(),
   },
   Menu: { setApplicationMenu: vi.fn(), buildFromTemplate: vi.fn() },
+  shell: { openExternal: vi.fn() },
+  session: {
+    fromPartition: vi.fn(() => ({ webRequest: { onBeforeSendHeaders: electron.updateHeaders } })),
+  },
   nativeTheme: { themeSource: 'system' },
 }));
 vi.mock('../src/core/catalog.js', async () => {
@@ -92,6 +102,43 @@ it('enforces production CSP, exposes recovery IPC and bounds authenticated main 
   const invoke = (name: string, value?: unknown) =>
     electron.handlers.get('ensemble:' + name)!(event, value);
   expect(await invoke('catalog')).toHaveProperty('recoveries', []);
+  const transportCallback = vi.fn();
+  electron.updateHeaders.mock.calls[0]![0](
+    {
+      url: 'https://github.com/kuarezma/ensemble-ai/releases/latest',
+      requestHeaders: { 'x-user-staging-id': 'unique-id', Accept: 'application/json' },
+    },
+    transportCallback,
+  );
+  expect(transportCallback).toHaveBeenCalledWith({
+    cancel: false,
+    requestHeaders: { Accept: 'application/json' },
+  });
+
+  expect(await invoke('update', { type: 'status' })).toMatchObject({
+    currentVersion: '0.1.1',
+    enabled: true,
+    status: 'dev',
+  });
+  await expect(invoke('update', { type: 'configure', enabled: 'yes' })).rejects.toThrow();
+  await expect(invoke('update', { type: 'download', url: 'https://evil.test' })).rejects.toThrow();
+  await expect(invoke('update', { type: 'unknown' })).rejects.toThrow();
+  expect(() =>
+    electron.handlers.get('ensemble:update')!(
+      { sender: {}, senderFrame: electron.contents.mainFrame },
+      { type: 'restart' },
+    ),
+  ).toThrow('Unauthorized IPC');
+  expect(await invoke('update', { type: 'configure', enabled: false })).toHaveProperty(
+    'enabled',
+    false,
+  );
+  await invoke('update', { type: 'notes' });
+  const { shell } = await import('electron');
+  expect(shell.openExternal).toHaveBeenCalledWith(
+    'https://github.com/kuarezma/ensemble-ai/releases/latest',
+  );
+
   const callback = vi.fn();
   electron.headers!(
     { responseHeaders: { 'content-security-policy': ['connect-src *'] } },

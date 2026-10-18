@@ -15,6 +15,7 @@ import { generatePlan } from '../src/core/engine/index.js';
 import type { EnsembleAPI } from '../src/shared/api.js';
 function mockAPI(): EnsembleAPI {
   return {
+    update: vi.fn(async () => ({ currentVersion: '0.1.1', enabled: true, status: 'dev' as const })),
     catalog: vi.fn(async () => ({
       models,
       tools,

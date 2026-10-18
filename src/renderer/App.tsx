@@ -14,6 +14,7 @@ import {
 } from '../core/schemas.js';
 import type { Catalog, EnsembleAPI, Preview } from '../shared/api.js';
 import { explain } from './explain.js';
+import { useUpdates, UpdateConsent, UpdateSettings, UpdateBanner } from './Updates.js';
 import { platformAdapter } from './platform/index.js';
 type Recovery = { id: string; status: 'applied' | 'prepared' };
 type RecoveryCatalog = Catalog & { recoveries?: Recovery[] };
@@ -26,6 +27,7 @@ type Selection = {
   efforts?: Record<string, string[]>;
 };
 export function App({ api = window.ensemble }: { api?: EnsembleAPI }) {
+  const updates = useUpdates(api);
   const [lang, setLang] = useState<'en' | 'tr'>('en');
   const t = (key: TextKey) => (lang === 'en' ? en : tr)[key];
   const [catalog, setCatalog] = useState<Catalog>();
@@ -266,7 +268,15 @@ export function App({ api = window.ensemble }: { api?: EnsembleAPI }) {
       <aside className="rail" aria-label={t('summary')}>
         <div className="brand">
           <span className="brand-mark" aria-hidden="true">
-            e<span>·</span>
+            <svg viewBox="0 0 1024 1024" width="40" height="40" aria-hidden="true">
+              <rect x="100" y="100" width="824" height="824" rx="190" fill="#2c48b8" />
+              <rect x="330" y="470" width="310" height="84" rx="42" fill="#25c7a2" />
+              <g fill="#fff">
+                <rect x="296" y="286" width="84" height="452" rx="42" />
+                <rect x="296" y="286" width="392" height="84" rx="42" />
+                <rect x="296" y="654" width="392" height="84" rx="42" />
+              </g>
+            </svg>
           </span>
           <strong>{t('app')}</strong>
         </div>
@@ -324,6 +334,7 @@ export function App({ api = window.ensemble }: { api?: EnsembleAPI }) {
             </select>
           </label>
         </header>
+        <UpdateBanner updates={updates} t={t} />
         {error && (
           <div role="alert" className="notice error">
             {t(error)}
@@ -341,6 +352,7 @@ export function App({ api = window.ensemble }: { api?: EnsembleAPI }) {
             <h1 ref={settingsHeading} tabIndex={-1}>
               {t('settings')}
             </h1>
+            <UpdateSettings updates={updates} t={t} />
             {recoveryList()}
             <label>
               {t('theme')}
@@ -639,6 +651,7 @@ export function App({ api = window.ensemble }: { api?: EnsembleAPI }) {
                     </label>
                     <p>{t('consentBody')}</p>
                     <small>{t('data')}</small>
+                    <UpdateConsent updates={updates} t={t} />
                   </div>
                   <p className="privacy">{t('privacy')}</p>
                 </>

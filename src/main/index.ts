@@ -1,4 +1,14 @@
-import { app, BrowserWindow, ipcMain, clipboard, safeStorage, Menu, nativeTheme } from 'electron';
+import {
+  app,
+  BrowserWindow,
+  ipcMain,
+  clipboard,
+  safeStorage,
+  Menu,
+  nativeTheme,
+  shell,
+  session,
+} from 'electron';
 import { mkdir } from 'node:fs/promises';
 import { homedir } from 'node:os';
 import path from 'node:path';
@@ -9,6 +19,17 @@ import { refreshAA, readBoundedResponseText } from '../core/aa/refresh.js';
 import { targetHome, createService } from './service.js';
 import { trustedRendererURL, rendererCSP } from './security.js';
 import { windowOptions, linuxDataDir } from './window.js';
+import electronUpdater from 'electron-updater';
+import {
+  updateRequestPolicy,
+  isSignedMacApp,
+  createUpdater,
+  readUpdateConsent,
+  writeUpdateConsent,
+  RELEASES_URL,
+  allowedUpdateURL,
+  type UpdaterPort,
+} from './updater.js';
 const home = targetHome(app.isPackaged, homedir(), process.cwd(), process.env.ENSEMBLE_HOME);
 const sandbox = !app.isPackaged || !!process.env.ENSEMBLE_HOME;
 const data = sandbox
@@ -28,9 +49,16 @@ let win: BrowserWindow | undefined;
 let encryptedKey: Buffer | undefined;
 let refreshing = false;
 function openWindow() {
-  win = new BrowserWindow(
-    windowOptions(process.platform, path.resolve(dirname, '../preload/index.cjs')),
-  );
+  win = new BrowserWindow({
+    ...windowOptions(process.platform, path.resolve(dirname, '../preload/index.cjs')),
+    ...(process.platform !== 'darwin'
+      ? {
+          icon: app.isPackaged
+            ? path.join(process.resourcesPath, 'icon.png')
+            : path.join(app.getAppPath(), 'build/icon.png'),
+        }
+      : {}),
+  });
   win.webContents.session.webRequest.onHeadersReceived((details, callback) => {
     const headers = Object.fromEntries(
       Object.entries(details.responseHeaders ?? {}).filter(
@@ -63,6 +91,45 @@ app.whenReady().then(async () => {
   await mkdir(home, { recursive: true });
   await mkdir(data, { recursive: true });
   nativeTheme.themeSource = 'system';
+  // Load Electron integration only at runtime; the state machine has no Electron dependency.
+  // electron-updater 6.8 uses this dedicated partition (ElectronHttpExecutor).
+  // Strip its persistent staging identifier and block unrelated network destinations.
+  session
+    .fromPartition('electron-updater', { cache: false })
+    .webRequest.onBeforeSendHeaders((details, callback) => {
+      callback(updateRequestPolicy(details.url, details.requestHeaders));
+    });
+  const { autoUpdater } = electronUpdater;
+  const updaterPort: UpdaterPort = autoUpdater;
+  autoUpdater.setFeedURL({ provider: 'github', owner: 'kuarezma', repo: 'ensemble-ai' });
+  const updates = createUpdater({
+    updater: updaterPort,
+    packaged: app.isPackaged && !sandbox,
+    platform: process.platform,
+    appImage: !!process.env.APPIMAGE,
+    macSigned:
+      process.platform === 'darwin' && app.isPackaged && !sandbox
+        ? await isSignedMacApp(app.getAppPath())
+        : false,
+    currentVersion: app.getVersion(),
+    enabled: await readUpdateConsent(data),
+    persist: (enabled) => writeUpdateConsent(data, enabled),
+  });
+  app.on('before-quit', () => updates.stop());
+  const UpdateActionSchema = z.discriminatedUnion('type', [
+    z.object({ type: z.enum(['status', 'check', 'restart', 'download', 'notes']) }).strict(),
+    z.object({ type: z.literal('configure'), enabled: z.boolean() }).strict(),
+  ]);
+  handle('update', async (raw) => {
+    const action = UpdateActionSchema.parse(raw);
+    if (action.type === 'configure') await updates.setEnabled(action.enabled);
+    if (action.type === 'check') void updates.check();
+    if (action.type === 'restart') updates.restart();
+    if (action.type === 'notes' || action.type === 'download') {
+      if (allowedUpdateURL(RELEASES_URL)) await shell.openExternal(RELEASES_URL);
+    }
+    return updates.snapshot();
+  });
   await service.recoveries();
   handle('catalog', async () => ({
     ...service.catalog(),

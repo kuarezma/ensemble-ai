@@ -17,6 +17,7 @@ function mockAPI() {
     { id: 'interrupted', status: 'prepared' },
   ];
   const api: EnsembleAPI = {
+    update: vi.fn(async () => ({ currentVersion: '0.1.1', enabled: true, status: 'dev' as const })),
     catalog: vi.fn(async () => ({
       models,
       tools,
