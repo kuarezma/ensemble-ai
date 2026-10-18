@@ -1,0 +1,373 @@
+[
+  {
+    "id": "anthropic-pro",
+    "name": "Pro",
+    "vendor": "Anthropic",
+    "via": "claude-code",
+    "models": [
+      {
+        "model": "claude-opus-5-5",
+        "efforts": [
+          "low",
+          "medium",
+          "high",
+          "xhigh",
+          "max"
+        ]
+      },
+      {
+        "model": "claude-sonnet-5-5",
+        "efforts": [
+          "low",
+          "medium",
+          "high",
+          "xhigh",
+          "max"
+        ]
+      },
+      {
+        "model": "claude-haiku-5-5",
+        "efforts": [
+          "low",
+          "medium",
+          "high",
+          "xhigh",
+          "max"
+        ]
+      }
+    ],
+    "scarcity": 3,
+    "estimate": true,
+    "notes": "Estimated access, not a quota promise. Confirm models and efforts in your client; empty lists require manual selection."
+  },
+  {
+    "id": "anthropic-max",
+    "name": "Max",
+    "vendor": "Anthropic",
+    "via": "claude-code",
+    "models": [
+      {
+        "model": "claude-opus-5-5",
+        "efforts": [
+          "low",
+          "medium",
+          "high",
+          "xhigh",
+          "max"
+        ]
+      },
+      {
+        "model": "claude-sonnet-5-5",
+        "efforts": [
+          "low",
+          "medium",
+          "high",
+          "xhigh",
+          "max"
+        ]
+      },
+      {
+        "model": "claude-haiku-5-5",
+        "efforts": [
+          "low",
+          "medium",
+          "high",
+          "xhigh",
+          "max"
+        ]
+      }
+    ],
+    "scarcity": 3,
+    "estimate": true,
+    "notes": "Estimated access, not a quota promise. Confirm models and efforts in your client; empty lists require manual selection."
+  },
+  {
+    "id": "openai-plus",
+    "name": "Plus",
+    "vendor": "OpenAI",
+    "via": "codex-cli",
+    "models": [
+      {
+        "model": "gpt-6-1-sol",
+        "efforts": [
+          "low",
+          "medium",
+          "high",
+          "xhigh",
+          "max"
+        ]
+      }
+    ],
+    "scarcity": 2,
+    "estimate": true,
+    "notes": "Estimated access, not a quota promise. Confirm models and efforts in your client; empty lists require manual selection."
+  },
+  {
+    "id": "openai-pro",
+    "name": "Pro",
+    "vendor": "OpenAI",
+    "via": "codex-cli",
+    "models": [
+      {
+        "model": "gpt-6-1-sol",
+        "efforts": [
+          "low",
+          "medium",
+          "high",
+          "xhigh",
+          "max"
+        ]
+      }
+    ],
+    "scarcity": 2,
+    "estimate": true,
+    "notes": "Estimated access, not a quota promise. Confirm models and efforts in your client; empty lists require manual selection."
+  },
+  {
+    "id": "google-google-ai-pro",
+    "name": "Google AI Pro",
+    "vendor": "Google",
+    "via": "gemini-cli",
+    "models": [
+      {
+        "model": "gemini-3-8-flash",
+        "efforts": [
+          "low",
+          "medium",
+          "high"
+        ]
+      },
+      {
+        "model": "gemini-4-argon",
+        "efforts": [
+          "medium",
+          "high"
+        ]
+      }
+    ],
+    "scarcity": 1,
+    "estimate": true,
+    "notes": "Estimated access, not a quota promise. Confirm models and efforts in your client; empty lists require manual selection."
+  },
+  {
+    "id": "google-google-ai-ultra",
+    "name": "Google AI Ultra",
+    "vendor": "Google",
+    "via": "gemini-cli",
+    "models": [
+      {
+        "model": "gemini-3-8-flash",
+        "efforts": [
+          "low",
+          "medium",
+          "high"
+        ]
+      },
+      {
+        "model": "gemini-4-argon",
+        "efforts": [
+          "medium",
+          "high"
+        ]
+      }
+    ],
+    "scarcity": 1,
+    "estimate": true,
+    "notes": "Estimated access, not a quota promise. Confirm models and efforts in your client; empty lists require manual selection."
+  },
+  {
+    "id": "anysphere-cursor-pro",
+    "name": "Cursor Pro",
+    "vendor": "Anysphere",
+    "via": "cursor",
+    "models": [
+      {
+        "model": "claude-opus-5-5",
+        "efforts": [
+          "low",
+          "medium",
+          "high",
+          "xhigh",
+          "max"
+        ]
+      },
+      {
+        "model": "claude-sonnet-5-5",
+        "efforts": [
+          "low",
+          "medium",
+          "high",
+          "xhigh",
+          "max"
+        ]
+      },
+      {
+        "model": "claude-haiku-5-5",
+        "efforts": [
+          "low",
+          "medium",
+          "high",
+          "xhigh",
+          "max"
+        ]
+      },
+      {
+        "model": "muse-spark-1-3",
+        "efforts": [
+          "xhigh",
+          "max"
+        ]
+      },
+      {
+        "model": "kimi-k3",
+        "efforts": [
+          "low",
+          "max"
+        ]
+      },
+      {
+        "model": "grok-4-7",
+        "efforts": [
+          "low",
+          "high",
+          "xhigh"
+        ]
+      }
+    ],
+    "scarcity": 3,
+    "estimate": true,
+    "notes": "Estimated access, not a quota promise. Confirm models and efforts in your client; empty lists require manual selection."
+  },
+  {
+    "id": "github-copilot",
+    "name": "Copilot",
+    "vendor": "GitHub",
+    "via": "copilot-vscode",
+    "models": [],
+    "scarcity": 2,
+    "estimate": true,
+    "notes": "Estimated access, not a quota promise. Confirm models and efforts in your client; empty lists require manual selection."
+  },
+  {
+    "id": "windsurf-windsurf",
+    "name": "Windsurf",
+    "vendor": "Windsurf",
+    "via": "windsurf",
+    "models": [],
+    "scarcity": 2,
+    "estimate": true,
+    "notes": "Estimated access, not a quota promise. Confirm models and efforts in your client; empty lists require manual selection."
+  },
+  {
+    "id": "zed-zed",
+    "name": "Zed",
+    "vendor": "Zed",
+    "via": "zed",
+    "models": [],
+    "scarcity": 2,
+    "estimate": true,
+    "notes": "Estimated access, not a quota promise. Confirm models and efforts in your client; empty lists require manual selection."
+  },
+  {
+    "id": "api-api-key",
+    "name": "API-key",
+    "vendor": "API",
+    "via": "api-key",
+    "models": [
+      {
+        "model": "claude-opus-5-5",
+        "efforts": [
+          "low",
+          "medium",
+          "high",
+          "xhigh",
+          "max"
+        ]
+      },
+      {
+        "model": "claude-sonnet-5-5",
+        "efforts": [
+          "low",
+          "medium",
+          "high",
+          "xhigh",
+          "max"
+        ]
+      },
+      {
+        "model": "claude-haiku-5-5",
+        "efforts": [
+          "low",
+          "medium",
+          "high",
+          "xhigh",
+          "max"
+        ]
+      },
+      {
+        "model": "gpt-6-1-sol",
+        "efforts": [
+          "low",
+          "medium",
+          "high",
+          "xhigh",
+          "max"
+        ]
+      },
+      {
+        "model": "gemini-3-8-flash",
+        "efforts": [
+          "low",
+          "medium",
+          "high"
+        ]
+      },
+      {
+        "model": "gemini-4-argon",
+        "efforts": [
+          "medium",
+          "high"
+        ]
+      },
+      {
+        "model": "glm-5-3",
+        "efforts": [
+          "low",
+          "max"
+        ]
+      },
+      {
+        "model": "muse-spark-1-3",
+        "efforts": [
+          "xhigh",
+          "max"
+        ]
+      },
+      {
+        "model": "kimi-k3",
+        "efforts": [
+          "low",
+          "max"
+        ]
+      },
+      {
+        "model": "deepseek-v4-1-flash",
+        "efforts": [
+          "none",
+          "max"
+        ]
+      },
+      {
+        "model": "grok-4-7",
+        "efforts": [
+          "low",
+          "high",
+          "xhigh"
+        ]
+      }
+    ],
+    "scarcity": 1,
+    "estimate": true,
+    "notes": "Estimated access, not a quota promise. Confirm models and efforts in your client; empty lists require manual selection."
+  }
+]

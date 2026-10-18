@@ -1,0 +1,56 @@
+name: Release installers
+on:
+  push:
+    tags: ['v*']
+permissions:
+  contents: write
+jobs:
+  installers:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: macos-latest
+            target: --mac --x64
+          - os: windows-latest
+            target: --win --x64
+          - os: ubuntu-latest
+            target: --linux --x64
+    runs-on: ${{ matrix.os }}
+    env:
+      ENSEMBLE_HOME: ${{ github.workspace }}/.sandbox-home
+      electron_config_cache: ${{ github.workspace }}/.electron-cache
+      CSC_IDENTITY_AUTO_DISCOVERY: 'false'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm test
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm run dist -- ${{ matrix.target }} --publish never --config.extraMetadata.homepage=https://github.com/${{ github.repository }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: installers-${{ matrix.os }}
+          path: |
+            release/*.dmg
+            release/*.exe
+            release/*.AppImage
+            release/*.deb
+          if-no-files-found: error
+  publish:
+    needs: installers
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: installers
+          merge-multiple: true
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: installers/*
+          fail_on_unmatched_files: true
+          generate_release_notes: true

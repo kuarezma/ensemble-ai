@@ -1,0 +1,40 @@
+name: CI
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  check:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-latest, windows-latest, ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    env:
+      ENSEMBLE_HOME: ${{ github.workspace }}/.sandbox-home
+      electron_config_cache: ${{ github.workspace }}/.electron-cache
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm test
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm run build
+      - name: Install headless Chromium
+        if: runner.os == 'Linux'
+        run: npx playwright install --with-deps chromium
+        env:
+          PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/.dev-data/playwright
+      - name: Built renderer UI gate
+        if: runner.os == 'Linux'
+        run: npm run ui:gate
+        env:
+          PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/.dev-data/playwright
+      - uses: actions/upload-artifact@v4
+        if: always() && runner.os == 'Linux'
+        with:
+          name: renderer-ui-evidence
+          path: docs/screenshots/

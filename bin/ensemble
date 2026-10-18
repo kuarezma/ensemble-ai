@@ -1,0 +1,12 @@
+#!/usr/bin/env node
+try {
+  const { runCLI } = await import('../dist/core/cli.js');
+  await runCLI(process.argv.slice(2));
+} catch (error) {
+  console.error(
+    error.code === 'ERR_MODULE_NOT_FOUND'
+      ? 'Build the core first: npm run build:core'
+      : error.message,
+  );
+  process.exitCode = 1;
+}

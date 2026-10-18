@@ -1,0 +1,1011 @@
+[
+  {
+    "id": "claude-opus-5-5",
+    "name": "Claude Opus 5.5",
+    "family": "claude",
+    "efforts": [
+      {
+        "effort": "low",
+        "metrics": {
+          "intelligence": 42.3077781466168,
+          "terminalBench": 0.313131313131313,
+          "automationBench": 0.5292537042934996,
+          "knowledgeAccuracy": 0.6353333333333333,
+          "hallucinationRate": 0.676416819012797,
+          "outputTokensPerTask": 10151.276275623324,
+          "cost": 860.3337405339145,
+          "speed": 76.2800264229651,
+          "ttft": 12.390505538
+        },
+        "source": "https://artificialanalysis.ai/models/claude-opus-5-5-low",
+        "date": "2026-10-19",
+        "sourceSnapshot": "claude_opus_5_5_all_variants.json",
+        "dateKind": "imported",
+        "additionalSources": [
+          "aa_all_models.json (supplemental leaderboard fields)"
+        ]
+      },
+      {
+        "effort": "medium",
+        "metrics": {
+          "intelligence": 51.2434931792768,
+          "terminalBench": 0.525252525252525,
+          "automationBench": 0.6121742919892179,
+          "knowledgeAccuracy": 0.6455,
+          "hallucinationRate": 0.6835919134931829,
+          "outputTokensPerTask": 25745.286895441168,
+          "cost": 1626.8112374421187,
+          "speed": 71.9384212150227,
+          "ttft": 22.1838609384999
+        },
+        "source": "https://artificialanalysis.ai/models/claude-opus-5-5-medium",
+        "date": "2026-10-19",
+        "sourceSnapshot": "claude_opus_5_5_all_variants.json",
+        "dateKind": "imported",
+        "additionalSources": [
+          "aa_all_models.json (supplemental leaderboard fields)"
+        ]
+      },
+      {
+        "effort": "high",
+        "metrics": {
+          "intelligence": 53.5831959822067,
+          "terminalBench": 0.565656565656566,
+          "automationBench": 0.6320677483186213,
+          "knowledgeAccuracy": 0.6458333333333334,
+          "hallucinationRate": 0.676235294117647,
+          "outputTokensPerTask": 35584.058877984105,
+          "cost": 2172.4277012236644,
+          "speed": 74.3972614063985,
+          "ttft": 37.3713814654999
+        },
+        "source": "https://artificialanalysis.ai/models/claude-opus-5-5-high",
+        "date": "2026-10-19",
+        "sourceSnapshot": "claude_opus_5_5_all_variants.json",
+        "dateKind": "imported",
+        "additionalSources": [
+          "aa_all_models.json (supplemental leaderboard fields)"
+        ]
+      },
+      {
+        "effort": "xhigh",
+        "metrics": {
+          "intelligence": 55.9873505840139,
+          "terminalBench": 0.595959595959596,
+          "automationBench": 0.6495283516401527,
+          "knowledgeAccuracy": 0.6538333333333334,
+          "hallucinationRate": 0.6567164179104478,
+          "outputTokensPerTask": 65667.3950659979,
+          "cost": 4056.6546786492113,
+          "speed": 78.5446549540035,
+          "ttft": 137.3388380525
+        },
+        "source": "https://artificialanalysis.ai/models/claude-opus-5-5-xhigh",
+        "date": "2026-10-19",
+        "sourceSnapshot": "claude_opus_5_5_all_variants.json",
+        "dateKind": "imported",
+        "additionalSources": [
+          "aa_all_models.json (supplemental leaderboard fields)"
+        ]
+      },
+      {
+        "effort": "max",
+        "metrics": {
+          "intelligence": 57.6223698102963,
+          "terminalBench": 0.595959595959596,
+          "automationBench": 0.6953868128636069,
+          "knowledgeAccuracy": 0.6621666666666667,
+          "hallucinationRate": 0.5860878145041933,
+          "outputTokensPerTask": 119166.01575731623,
+          "cost": 8708.197642611496,
+          "speed": 93.0146317747311,
+          "ttft": 679.557732417
+        },
+        "source": "https://artificialanalysis.ai/models/claude-opus-5-5",
+        "date": "2026-10-19",
+        "sourceSnapshot": "claude_opus_5_5_all_variants.json",
+        "dateKind": "imported",
+        "additionalSources": [
+          "aa_all_models.json (supplemental leaderboard fields)"
+        ]
+      }
+    ],
+    "context": 1000000,
+    "price": {
+      "input": 4,
+      "output": 20,
+      "cacheRead": 0.2
+    },
+    "availability": [
+      "api-key",
+      "opencode",
+      "claude-code",
+      "cursor"
+    ],
+    "availabilityEstimate": true,
+    "gateableTaskTypes": [
+      "mechanical-with-gate",
+      "spec-with-tests"
+    ],
+    "provisional": false
+  },
+  {
+    "id": "claude-sonnet-5-5",
+    "name": "Claude Sonnet 5.5",
+    "family": "claude",
+    "efforts": [
+      {
+        "effort": "low",
+        "metrics": {
+          "intelligence": 35.8430309275022,
+          "terminalBench": 0.207070707070707,
+          "automationBench": 0.5005835580831958,
+          "knowledgeAccuracy": 0.463,
+          "hallucinationRate": 0.5015518311607697,
+          "outputTokensPerTask": 13894.173936486533,
+          "cost": 544.486057717068,
+          "speed": 91.466459700951,
+          "ttft": 1.31082844399998
+        },
+        "source": "https://artificialanalysis.ai/models/claude-sonnet-5-5-low",
+        "date": "2026-10-19",
+        "sourceSnapshot": "claude_sonnet_5_5_all_variants.json",
+        "dateKind": "imported",
+        "additionalSources": [
+          "aa_all_models.json (supplemental leaderboard fields)"
+        ]
+      },
+      {
+        "effort": "medium",
+        "metrics": {
+          "intelligence": 40.7386909594307,
+          "terminalBench": 0.297979797979798,
+          "automationBench": 0.5291040339124842,
+          "knowledgeAccuracy": 0.4716666666666667,
+          "hallucinationRate": 0.5123028391167193,
+          "outputTokensPerTask": 19488.335802899004,
+          "cost": 700.5769255335927,
+          "speed": 98.6532741569137,
+          "ttft": 1.22567805199998
+        },
+        "source": "https://artificialanalysis.ai/models/claude-sonnet-5-5-medium",
+        "date": "2026-10-19",
+        "sourceSnapshot": "claude_sonnet_5_5_all_variants.json",
+        "dateKind": "imported",
+        "additionalSources": [
+          "aa_all_models.json (supplemental leaderboard fields)"
+        ]
+      },
+      {
+        "effort": "high",
+        "metrics": {
+          "intelligence": 46.7356921799024,
+          "terminalBench": 0.439393939393939,
+          "automationBench": 0.5907601772480616,
+          "knowledgeAccuracy": 0.5198333333333334,
+          "hallucinationRate": 0.6463033668864977,
+          "outputTokensPerTask": 34467.167925515074,
+          "cost": 1175.8367800578142,
+          "speed": 102.025464322078,
+          "ttft": 12.198535278
+        },
+        "source": "https://artificialanalysis.ai/models/claude-sonnet-5-5-high",
+        "date": "2026-10-19",
+        "sourceSnapshot": "claude_sonnet_5_5_all_variants.json",
+        "dateKind": "imported",
+        "additionalSources": [
+          "aa_all_models.json (supplemental leaderboard fields)"
+        ]
+      },
+      {
+        "effort": "xhigh",
+        "metrics": {
+          "intelligence": 51.8522867021152,
+          "terminalBench": 0.570707070707071,
+          "automationBench": 0.646549151727818,
+          "knowledgeAccuracy": 0.5303333333333333,
+          "hallucinationRate": 0.6288147622427254,
+          "outputTokensPerTask": 73724.38302563434,
+          "cost": 2738.120676774117,
+          "speed": 104.871201742443,
+          "ttft": 32.4564691895
+        },
+        "source": "https://artificialanalysis.ai/models/claude-sonnet-5-5-xhigh",
+        "date": "2026-10-19",
+        "sourceSnapshot": "claude_sonnet_5_5_all_variants.json",
+        "dateKind": "imported",
+        "additionalSources": [
+          "aa_all_models.json (supplemental leaderboard fields)"
+        ]
+      },
+      {
+        "effort": "max",
+        "metrics": {
+          "intelligence": 55.9779549012591,
+          "terminalBench": 0.636363636363636,
+          "automationBench": 0.7132534614553299,
+          "knowledgeAccuracy": 0.5395,
+          "hallucinationRate": 0.47014115092290987,
+          "outputTokensPerTask": 192838.16147386289,
+          "cost": 8976.64550915108,
+          "speed": 139.150604562872,
+          "ttft": 441.144043298
+        },
+        "source": "https://artificialanalysis.ai/models/claude-sonnet-5-5",
+        "date": "2026-10-19",
+        "sourceSnapshot": "claude_sonnet_5_5_all_variants.json",
+        "dateKind": "imported",
+        "additionalSources": [
+          "aa_all_models.json (supplemental leaderboard fields)"
+        ]
+      }
+    ],
+    "context": 1000000,
+    "price": {
+      "input": 2,
+      "output": 10,
+      "cacheRead": 0.2
+    },
+    "availability": [
+      "api-key",
+      "opencode",
+      "claude-code",
+      "cursor"
+    ],
+    "availabilityEstimate": true,
+    "gateableTaskTypes": [
+      "mechanical-with-gate",
+      "spec-with-tests"
+    ],
+    "provisional": false
+  },
+  {
+    "id": "claude-haiku-5-5",
+    "name": "Claude Haiku 5.5",
+    "family": "claude",
+    "efforts": [
+      {
+        "effort": "low",
+        "metrics": {
+          "intelligence": 29.4494981304947,
+          "terminalBench": 0.126262626262626,
+          "automationBench": 0.22910812181110643,
+          "knowledgeAccuracy": 0.3325,
+          "hallucinationRate": 0.449438202247191,
+          "outputTokensPerTask": 17285.662340292656,
+          "cost": 34.30614811843952,
+          "speed": null,
+          "ttft": null
+        },
+        "source": "https://artificialanalysis.ai/models/claude-haiku-5-5-low",
+        "date": "2026-10-19",
+        "sourceSnapshot": "claude_haiku_5_5_all_variants.json",
+        "dateKind": "imported",
+        "additionalSources": [
+          "aa_all_models.json (supplemental leaderboard fields)"
+        ]
+      },
+      {
+        "effort": "medium",
+        "metrics": {
+          "intelligence": 34.4646519474657,
+          "terminalBench": 0.151515151515152,
+          "automationBench": 0.2858961481429316,
+          "knowledgeAccuracy": 0.3403333333333333,
+          "hallucinationRate": 0.44820616472966146,
+          "outputTokensPerTask": 32812.5566527238,
+          "cost": 56.359270851851434,
+          "speed": null,
+          "ttft": null
+        },
+        "source": "https://artificialanalysis.ai/models/claude-haiku-5-5-medium",
+        "date": "2026-10-19",
+        "sourceSnapshot": "claude_haiku_5_5_all_variants.json",
+        "dateKind": "imported",
+        "additionalSources": [
+          "aa_all_models.json (supplemental leaderboard fields)"
+        ]
+      },
+      {
+        "effort": "high",
+        "metrics": {
+          "intelligence": 37.8240211671094,
+          "terminalBench": 0.217171717171717,
+          "automationBench": 0.3372685311767238,
+          "knowledgeAccuracy": 0.3478333333333333,
+          "hallucinationRate": 0.44518272425249167,
+          "outputTokensPerTask": 55387.818996128815,
+          "cost": 94.06688065451641,
+          "speed": null,
+          "ttft": null
+        },
+        "source": "https://artificialanalysis.ai/models/claude-haiku-5-5-high",
+        "date": "2026-10-19",
+        "sourceSnapshot": "claude_haiku_5_5_all_variants.json",
+        "dateKind": "imported",
+        "additionalSources": [
+          "aa_all_models.json (supplemental leaderboard fields)"
+        ]
+      },
+      {
+        "effort": "xhigh",
+        "metrics": {
+          "intelligence": 41.2489304677024,
+          "terminalBench": 0.292929292929293,
+          "automationBench": 0.35953889773428194,
+          "knowledgeAccuracy": 0.3495,
+          "hallucinationRate": 0.44427363566487316,
+          "outputTokensPerTask": 89393.87478792222,
+          "cost": 157.5758646895501,
+          "speed": null,
+          "ttft": null
+        },
+        "source": "https://artificialanalysis.ai/models/claude-haiku-5-5-xhigh",
+        "date": "2026-10-19",
+        "sourceSnapshot": "claude_haiku_5_5_all_variants.json",
+        "dateKind": "imported",
+        "additionalSources": [
+          "aa_all_models.json (supplemental leaderboard fields)"
+        ]
+      },
+      {
+        "effort": "max",
+        "metrics": {
+          "intelligence": 43.3950199670746,
+          "terminalBench": 0.328282828282828,
+          "automationBench": 0.35411015132783624,
+          "knowledgeAccuracy": 0.36383333333333334,
+          "hallucinationRate": 0.404244170814776,
+          "outputTokensPerTask": 162164.1932085826,
+          "cost": 330.2539429478554,
+          "speed": null,
+          "ttft": null
+        },
+        "source": "https://artificialanalysis.ai/models/claude-haiku-5-5",
+        "date": "2026-10-19",
+        "sourceSnapshot": "claude_haiku_5_5_all_variants.json",
+        "dateKind": "imported",
+        "additionalSources": [
+          "aa_all_models.json (supplemental leaderboard fields)"
+        ]
+      }
+    ],
+    "context": 1000000,
+    "price": {
+      "input": 0.1,
+      "output": 0.5,
+      "cacheRead": 0.01
+    },
+    "availability": [
+      "api-key",
+      "opencode",
+      "claude-code",
+      "cursor"
+    ],
+    "availabilityEstimate": true,
+    "gateableTaskTypes": [
+      "mechanical-with-gate",
+      "spec-with-tests"
+    ],
+    "provisional": false
+  },
+  {
+    "id": "gpt-6-1-sol",
+    "name": "GPT-6.1 Sol",
+    "family": "gpt",
+    "efforts": [
+      {
+        "effort": "low",
+        "metrics": {
+          "intelligence": 42.0835618555848,
+          "terminalBench": 0.308080808080808,
+          "automationBench": 0.5257088964747538,
+          "knowledgeAccuracy": 0.5886666666666667,
+          "hallucinationRate": 0.5162074554294975,
+          "outputTokensPerTask": 3976.700974677209,
+          "cost": 250.4765467783383,
+          "speed": 59.652214222886,
+          "ttft": 2.61253805799993
+        },
+        "source": "https://artificialanalysis.ai/models/gpt-6-1-sol-low",
+        "date": "2026-10-19",
+        "sourceSnapshot": "gpt_6_1_sol_all_variants.json",
+        "dateKind": "imported",
+        "additionalSources": [
+          "aa_all_models.json (supplemental leaderboard fields)"
+        ]
+      },
+      {
+        "effort": "medium",
+        "metrics": {
+          "intelligence": 47.7833271274065,
+          "terminalBench": 0.47979797979798,
+          "automationBench": 0.6257350970435687,
+          "knowledgeAccuracy": 0.604,
+          "hallucinationRate": 0.5164141414141414,
+          "outputTokensPerTask": 8069.842557491671,
+          "cost": 361.36843723681613,
+          "speed": 52.6982559165634,
+          "ttft": 5.50407989950003
+        },
+        "source": "https://artificialanalysis.ai/models/gpt-6-1-sol-medium",
+        "date": "2026-10-19",
+        "sourceSnapshot": "gpt_6_1_sol_all_variants.json",
+        "dateKind": "imported",
+        "additionalSources": [
+          "aa_all_models.json (supplemental leaderboard fields)"
+        ]
+      },
+      {
+        "effort": "high",
+        "metrics": {
+          "intelligence": 50.2377777519769,
+          "terminalBench": 0.515151515151515,
+          "automationBench": 0.6449523732184466,
+          "knowledgeAccuracy": 0.608,
+          "hallucinationRate": 0.49362244897959184,
+          "outputTokensPerTask": 13191.870219821281,
+          "cost": 521.3175499431111,
+          "speed": 58.2264332673186,
+          "ttft": 57.6148518745
+        },
+        "source": "https://artificialanalysis.ai/models/gpt-6-1-sol-high",
+        "date": "2026-10-19",
+        "sourceSnapshot": "gpt_6_1_sol_all_variants.json",
+        "dateKind": "imported",
+        "additionalSources": [
+          "aa_all_models.json (supplemental leaderboard fields)"
+        ]
+      },
+      {
+        "effort": "xhigh",
+        "metrics": {
+          "intelligence": 51.0377679093761,
+          "terminalBench": 0.54040404040404,
+          "automationBench": 0.6657372141364344,
+          "knowledgeAccuracy": 0.6081666666666666,
+          "hallucinationRate": 0.5091450446618461,
+          "outputTokensPerTask": 17618.833790384873,
+          "cost": 662.2797575003286,
+          "speed": 53.4464260411092,
+          "ttft": 110.2791711425
+        },
+        "source": "https://artificialanalysis.ai/models/gpt-6-1-sol-xhigh",
+        "date": "2026-10-19",
+        "sourceSnapshot": "gpt_6_1_sol_all_variants.json",
+        "dateKind": "imported",
+        "additionalSources": [
+          "aa_all_models.json (supplemental leaderboard fields)"
+        ]
+      },
+      {
+        "effort": "max",
+        "metrics": {
+          "intelligence": 51.8332597011541,
+          "terminalBench": 0.560606060606061,
+          "automationBench": 0.6486844882398171,
+          "knowledgeAccuracy": 0.621,
+          "hallucinationRate": 0.5426561125769569,
+          "outputTokensPerTask": 38128.428914433774,
+          "cost": 1081.552560620246,
+          "speed": 66.843321439247,
+          "ttft": 267.640414147
+        },
+        "source": "https://artificialanalysis.ai/models/gpt-6-1-sol",
+        "date": "2026-10-19",
+        "sourceSnapshot": "gpt_6_1_sol_all_variants.json",
+        "dateKind": "imported",
+        "additionalSources": [
+          "aa_all_models.json (supplemental leaderboard fields)"
+        ]
+      }
+    ],
+    "context": 1000000,
+    "price": {
+      "input": 2,
+      "output": 10,
+      "cacheRead": 0.1
+    },
+    "availability": [
+      "api-key",
+      "opencode",
+      "codex-cli"
+    ],
+    "availabilityEstimate": true,
+    "gateableTaskTypes": [
+      "mechanical-with-gate",
+      "spec-with-tests"
+    ],
+    "provisional": false
+  },
+  {
+    "id": "gemini-3-8-flash",
+    "name": "Gemini 3.8 Flash",
+    "family": "gemini",
+    "efforts": [
+      {
+        "effort": "low",
+        "metrics": {
+          "intelligence": 33.4548106699132,
+          "terminalBench": 0.101010101010101,
+          "automationBench": 0.3650940461486253,
+          "knowledgeAccuracy": 0.5221666666666667,
+          "hallucinationRate": 0.6459713986745728,
+          "outputTokensPerTask": null,
+          "cost": null,
+          "speed": null,
+          "ttft": null
+        },
+        "source": "https://artificialanalysis.ai/models/gemini-3-8-flash-low",
+        "date": "2026-10-19",
+        "sourceSnapshot": "gemini_3_8_flash_all_variants.json",
+        "dateKind": "imported",
+        "additionalSources": [
+          "aa_all_models.json (supplemental leaderboard fields)"
+        ]
+      },
+      {
+        "effort": "medium",
+        "metrics": {
+          "intelligence": 39.7740187061926,
+          "terminalBench": 0.196969696969697,
+          "automationBench": 0.6088997392114149,
+          "knowledgeAccuracy": 0.5298333333333334,
+          "hallucinationRate": 0.5189649060616802,
+          "outputTokensPerTask": 52598.80180165109,
+          "cost": 1100.060747791257,
+          "speed": null,
+          "ttft": null
+        },
+        "source": "https://artificialanalysis.ai/models/gemini-3-8-flash-medium",
+        "date": "2026-10-19",
+        "sourceSnapshot": "gemini_3_8_flash_all_variants.json",
+        "dateKind": "imported",
+        "additionalSources": [
+          "aa_all_models.json (supplemental leaderboard fields)"
+        ]
+      },
+      {
+        "effort": "high",
+        "metrics": {
+          "intelligence": 40.9262321765904,
+          "terminalBench": 0.196969696969697,
+          "automationBench": 0.5993009432118243,
+          "knowledgeAccuracy": 0.546,
+          "hallucinationRate": 0.551762114537445,
+          "outputTokensPerTask": 71002.56693639373,
+          "cost": 1622.7263776021543,
+          "speed": 128.886963693799,
+          "ttft": 24.3262215479999
+        },
+        "source": "https://artificialanalysis.ai/models/gemini-3-8-flash",
+        "date": "2026-10-19",
+        "sourceSnapshot": "gemini_3_8_flash_all_variants.json",
+        "dateKind": "imported",
+        "additionalSources": [
+          "aa_all_models.json (supplemental leaderboard fields)"
+        ]
+      }
+    ],
+    "context": 1000000,
+    "price": {
+      "input": 0.75,
+      "output": 3.75,
+      "cacheRead": 0.075
+    },
+    "availability": [
+      "api-key",
+      "opencode",
+      "gemini-cli",
+      "antigravity"
+    ],
+    "availabilityEstimate": true,
+    "gateableTaskTypes": [
+      "mechanical-with-gate",
+      "spec-with-tests"
+    ],
+    "provisional": false
+  },
+  {
+    "id": "gemini-4-argon",
+    "name": "Gemini 4 Argon",
+    "family": "gemini",
+    "efforts": [
+      {
+        "effort": "medium",
+        "metrics": {
+          "intelligence": null,
+          "terminalBench": null,
+          "automationBench": null,
+          "knowledgeAccuracy": null,
+          "hallucinationRate": null,
+          "outputTokensPerTask": null,
+          "cost": null,
+          "speed": null,
+          "ttft": null
+        },
+        "source": "https://artificialanalysis.ai/models/gemini-4-argon",
+        "date": "2026-10-13",
+        "sourceSnapshot": "local-gated-trials-2026-10-13",
+        "dateKind": "imported",
+        "additionalSources": [
+          "Local gated K1/B1 trials (2026-10-13, n=1): medium completed; high timed out in B1. AA benchmark metrics are unavailable at medium; high-tier metrics remain separate."
+        ]
+      },
+      {
+        "effort": "high",
+        "metrics": {
+          "intelligence": 52.5605655745982,
+          "terminalBench": 0.570707070707071,
+          "automationBench": 0.7751346945899195,
+          "knowledgeAccuracy": 0.499,
+          "hallucinationRate": 0.1506986027944112,
+          "outputTokensPerTask": 61557.626207648,
+          "cost": 2407.239010161643,
+          "speed": null,
+          "ttft": null
+        },
+        "source": "https://artificialanalysis.ai/models/gemini-4-argon",
+        "date": "2026-10-19",
+        "sourceSnapshot": "gemini_4_argon_all_variants.json",
+        "dateKind": "imported",
+        "additionalSources": [
+          "aa_all_models.json (supplemental leaderboard fields)"
+        ]
+      }
+    ],
+    "context": 1000000,
+    "price": {
+      "input": 2,
+      "output": 10,
+      "cacheRead": 0.1
+    },
+    "availability": [
+      "api-key",
+      "opencode",
+      "gemini-cli",
+      "antigravity"
+    ],
+    "availabilityEstimate": true,
+    "gateableTaskTypes": [
+      "mechanical-with-gate",
+      "spec-with-tests"
+    ],
+    "provisional": false
+  },
+  {
+    "id": "glm-5-3",
+    "name": "GLM-5.3",
+    "family": "glm",
+    "efforts": [
+      {
+        "effort": "low",
+        "metrics": {
+          "intelligence": 34.2990078159643,
+          "terminalBench": 0.348484848484849,
+          "automationBench": null,
+          "knowledgeAccuracy": 0.33916666666666667,
+          "hallucinationRate": 0.6403530895334174,
+          "outputTokensPerTask": null,
+          "cost": null,
+          "speed": 66.7601443065495,
+          "ttft": 33.08759793093286
+        },
+        "source": "https://artificialanalysis.ai/models/glm-5-3-low",
+        "date": "2026-10-19",
+        "sourceSnapshot": "aa_all_models.json",
+        "dateKind": "imported",
+        "additionalSources": []
+      },
+      {
+        "effort": "max",
+        "metrics": {
+          "intelligence": 44.777392385614,
+          "terminalBench": 0.419191919191919,
+          "automationBench": 0.622028649962642,
+          "knowledgeAccuracy": 0.3385,
+          "hallucinationRate": 0.29554043839758126,
+          "outputTokensPerTask": 71127.61363824058,
+          "cost": 2503.478685148468,
+          "speed": 71.974776791146,
+          "ttft": 30.704062302276352
+        },
+        "source": "https://artificialanalysis.ai/models/glm-5-3",
+        "date": "2026-10-19",
+        "sourceSnapshot": "aa_all_models.json",
+        "dateKind": "imported",
+        "additionalSources": []
+      }
+    ],
+    "context": 1000000,
+    "price": {
+      "input": 1.4,
+      "output": 4.4,
+      "cacheRead": 0.26
+    },
+    "availability": [
+      "api-key",
+      "opencode"
+    ],
+    "availabilityEstimate": true,
+    "gateableTaskTypes": [
+      "mechanical-with-gate",
+      "spec-with-tests"
+    ],
+    "provisional": false
+  },
+  {
+    "id": "muse-spark-1-3",
+    "name": "Muse Spark 1.3",
+    "family": "muse",
+    "efforts": [
+      {
+        "effort": "xhigh",
+        "metrics": {
+          "intelligence": 45.0732966922226,
+          "terminalBench": 0.166666666666667,
+          "automationBench": 0.568,
+          "knowledgeAccuracy": 0.4151666666666667,
+          "hallucinationRate": 0.31461954972926764,
+          "outputTokensPerTask": 54500,
+          "cost": 1655,
+          "speed": 140.477533196884,
+          "ttft": 54.04467813290084
+        },
+        "source": "https://artificialanalysis.ai/models/muse-spark-1-3-xhigh",
+        "date": "2026-10-19",
+        "sourceSnapshot": "aa_all_models.json",
+        "dateKind": "imported",
+        "additionalSources": [
+          "ROUTING table 1b (2026-09-29; rounded measurements)"
+        ]
+      },
+      {
+        "effort": "max",
+        "metrics": {
+          "intelligence": 48.0923107719685,
+          "terminalBench": 0.333333333333333,
+          "automationBench": 0.5785343786538614,
+          "knowledgeAccuracy": 0.43583333333333335,
+          "hallucinationRate": 0.3293943870014771,
+          "outputTokensPerTask": 60200.15762740819,
+          "cost": 2000.3526584050005,
+          "speed": 123.477508192123,
+          "ttft": 69.09648217018281
+        },
+        "source": "https://artificialanalysis.ai/models/muse-spark-1-3",
+        "date": "2026-10-19",
+        "sourceSnapshot": "aa_all_models.json",
+        "dateKind": "imported",
+        "additionalSources": []
+      }
+    ],
+    "context": 1000000,
+    "price": {
+      "input": 1.25,
+      "output": 4.25,
+      "cacheRead": 0.15
+    },
+    "availability": [
+      "api-key",
+      "opencode",
+      "cursor"
+    ],
+    "availabilityEstimate": true,
+    "gateableTaskTypes": [
+      "mechanical-with-gate",
+      "spec-with-tests"
+    ],
+    "provisional": false
+  },
+  {
+    "id": "kimi-k3",
+    "name": "Kimi K3",
+    "family": "kimi",
+    "efforts": [
+      {
+        "effort": "low",
+        "metrics": {
+          "intelligence": 30.0666987529068,
+          "terminalBench": 0.126262626262626,
+          "automationBench": null,
+          "knowledgeAccuracy": 0.4575,
+          "hallucinationRate": 0.7711213517665131,
+          "outputTokensPerTask": null,
+          "cost": null,
+          "speed": 35.5828428210748,
+          "ttft": 61.39179313278684
+        },
+        "source": "https://artificialanalysis.ai/models/kimi-k3-low",
+        "date": "2026-10-19",
+        "sourceSnapshot": "aa_all_models.json",
+        "dateKind": "imported",
+        "additionalSources": []
+      },
+      {
+        "effort": "max",
+        "metrics": {
+          "intelligence": 43.5938229518782,
+          "terminalBench": 0.126262626262626,
+          "automationBench": 0.5827297780015204,
+          "knowledgeAccuracy": 0.47583333333333333,
+          "hallucinationRate": 0.5319554848966613,
+          "outputTokensPerTask": 48455.23210144532,
+          "cost": 3658.0675385043187,
+          "speed": 36.7631099947928,
+          "ttft": 58.46424741841352
+        },
+        "source": "https://artificialanalysis.ai/models/kimi-k3",
+        "date": "2026-10-19",
+        "sourceSnapshot": "aa_all_models.json",
+        "dateKind": "imported",
+        "additionalSources": []
+      }
+    ],
+    "context": 1048576,
+    "price": {
+      "input": 3,
+      "output": 15,
+      "cacheRead": 0.3
+    },
+    "availability": [
+      "api-key",
+      "opencode",
+      "cursor"
+    ],
+    "availabilityEstimate": true,
+    "gateableTaskTypes": [
+      "mechanical-with-gate",
+      "spec-with-tests"
+    ],
+    "provisional": false
+  },
+  {
+    "id": "deepseek-v4-1-flash",
+    "name": "DeepSeek V4.1 Flash",
+    "family": "deepseek",
+    "efforts": [
+      {
+        "effort": "none",
+        "metrics": {
+          "intelligence": 24.6733593924318,
+          "terminalBench": 0.0555555555555556,
+          "automationBench": 0.4780780681445035,
+          "knowledgeAccuracy": 0.2845,
+          "hallucinationRate": 0.5399487537852318,
+          "outputTokensPerTask": 33698.98527659433,
+          "cost": 155.51759999328755,
+          "speed": 215.380174818706,
+          "ttft": 0.962626226000026
+        },
+        "source": "https://artificialanalysis.ai/models/deepseek-v4-1-flash-non-reasoning",
+        "date": "2026-10-19",
+        "sourceSnapshot": "deepseek_v4_1_flash_all_variants.json",
+        "dateKind": "imported",
+        "additionalSources": [
+          "aa_all_models.json (supplemental leaderboard fields)"
+        ]
+      },
+      {
+        "effort": "max",
+        "metrics": {
+          "intelligence": 39.456167472527,
+          "terminalBench": 0.267676767676768,
+          "automationBench": 0.6889097769674057,
+          "knowledgeAccuracy": 0.464,
+          "hallucinationRate": 0.9645522388059702,
+          "outputTokensPerTask": 88573.99849468909,
+          "cost": 476.89044593693893,
+          "speed": 213.26826879237,
+          "ttft": 10.400797630903654
+        },
+        "source": "https://artificialanalysis.ai/models/deepseek-v4-1-flash",
+        "date": "2026-10-19",
+        "sourceSnapshot": "deepseek_v4_1_flash_all_variants.json",
+        "dateKind": "imported",
+        "additionalSources": [
+          "aa_all_models.json (supplemental leaderboard fields)"
+        ]
+      }
+    ],
+    "context": 1000000,
+    "price": {
+      "input": 0.3,
+      "output": 1.2,
+      "cacheRead": 0.006
+    },
+    "availability": [
+      "api-key",
+      "opencode"
+    ],
+    "availabilityEstimate": true,
+    "gateableTaskTypes": [
+      "mechanical-with-gate",
+      "spec-with-tests"
+    ],
+    "provisional": false
+  },
+  {
+    "id": "grok-4-7",
+    "name": "Grok 4.7",
+    "family": "grok",
+    "efforts": [
+      {
+        "effort": "low",
+        "metrics": {
+          "intelligence": 42.2166560223448,
+          "terminalBench": 0.161616161616162,
+          "automationBench": null,
+          "knowledgeAccuracy": 0.497,
+          "hallucinationRate": 0.399271040424122,
+          "outputTokensPerTask": null,
+          "cost": null,
+          "speed": 77.8980526487592,
+          "ttft": 8.91854686850002
+        },
+        "source": "https://artificialanalysis.ai/models/grok-4-7-low",
+        "date": "2026-10-19",
+        "sourceSnapshot": "aa_all_models.json",
+        "dateKind": "imported",
+        "additionalSources": []
+      },
+      {
+        "effort": "high",
+        "metrics": {
+          "intelligence": 46.3321770885625,
+          "terminalBench": 0.247474747474747,
+          "automationBench": 0.635,
+          "knowledgeAccuracy": 0.4781666666666667,
+          "hallucinationRate": 0.3241775790482274,
+          "outputTokensPerTask": 65900,
+          "cost": 3881,
+          "speed": 78.4062400586857,
+          "ttft": 33.116545094
+        },
+        "source": "https://artificialanalysis.ai/models/grok-4-7-high",
+        "date": "2026-10-19",
+        "sourceSnapshot": "aa_all_models.json",
+        "dateKind": "imported",
+        "additionalSources": [
+          "ROUTING table 1b (2026-09-29; rounded measurements)"
+        ]
+      },
+      {
+        "effort": "xhigh",
+        "metrics": {
+          "intelligence": 46.4465506302286,
+          "terminalBench": 0.257575757575758,
+          "automationBench": 0.6555835148969458,
+          "knowledgeAccuracy": 0.4745,
+          "hallucinationRate": 0.29337139232477005,
+          "outputTokensPerTask": 80561.36472853081,
+          "cost": 4967.354257472305,
+          "speed": 74.8193340767844,
+          "ttft": 41.6944977550002
+        },
+        "source": "https://artificialanalysis.ai/models/grok-4-7",
+        "date": "2026-10-19",
+        "sourceSnapshot": "aa_all_models.json",
+        "dateKind": "imported",
+        "additionalSources": []
+      }
+    ],
+    "context": 500000,
+    "price": {
+      "input": 2,
+      "output": 6,
+      "cacheRead": 0.5
+    },
+    "availability": [
+      "api-key",
+      "opencode",
+      "cursor"
+    ],
+    "availabilityEstimate": true,
+    "gateableTaskTypes": [
+      "mechanical-with-gate",
+      "spec-with-tests"
+    ],
+    "provisional": false
+  }
+]

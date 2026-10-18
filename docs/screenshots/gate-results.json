@@ -1,0 +1,297 @@
+{
+  "status": "passed",
+  "cases": 36,
+  "applyCount": 4,
+  "revertCount": 4,
+  "consoleErrors": [],
+  "results": [
+    {
+      "width": 360,
+      "state": "01-welcome",
+      "scrollWidth": 360,
+      "clientWidth": 360,
+      "serious": 0,
+      "violations": []
+    },
+    {
+      "width": 360,
+      "state": "02-tools",
+      "scrollWidth": 360,
+      "clientWidth": 360,
+      "serious": 0,
+      "violations": []
+    },
+    {
+      "width": 360,
+      "state": "03-style",
+      "scrollWidth": 360,
+      "clientWidth": 360,
+      "serious": 0,
+      "violations": []
+    },
+    {
+      "width": 360,
+      "state": "04-crew",
+      "scrollWidth": 360,
+      "clientWidth": 360,
+      "serious": 0,
+      "violations": []
+    },
+    {
+      "width": 360,
+      "state": "05-diff",
+      "scrollWidth": 360,
+      "clientWidth": 360,
+      "serious": 0,
+      "violations": []
+    },
+    {
+      "width": 360,
+      "state": "06-success",
+      "scrollWidth": 360,
+      "clientWidth": 360,
+      "serious": 0,
+      "violations": []
+    },
+    {
+      "width": 360,
+      "state": "07-settings-dark",
+      "scrollWidth": 360,
+      "clientWidth": 360,
+      "serious": 0,
+      "violations": []
+    },
+    {
+      "width": 360,
+      "state": "08-refresh-diff-dark",
+      "scrollWidth": 360,
+      "clientWidth": 360,
+      "serious": 0,
+      "violations": []
+    },
+    {
+      "width": 360,
+      "state": "09-crew-tr-dark",
+      "scrollWidth": 360,
+      "clientWidth": 360,
+      "serious": 0,
+      "violations": []
+    },
+    {
+      "width": 390,
+      "state": "01-welcome",
+      "scrollWidth": 390,
+      "clientWidth": 390,
+      "serious": 0,
+      "violations": []
+    },
+    {
+      "width": 390,
+      "state": "02-tools",
+      "scrollWidth": 390,
+      "clientWidth": 390,
+      "serious": 0,
+      "violations": []
+    },
+    {
+      "width": 390,
+      "state": "03-style",
+      "scrollWidth": 390,
+      "clientWidth": 390,
+      "serious": 0,
+      "violations": []
+    },
+    {
+      "width": 390,
+      "state": "04-crew",
+      "scrollWidth": 390,
+      "clientWidth": 390,
+      "serious": 0,
+      "violations": []
+    },
+    {
+      "width": 390,
+      "state": "05-diff",
+      "scrollWidth": 390,
+      "clientWidth": 390,
+      "serious": 0,
+      "violations": []
+    },
+    {
+      "width": 390,
+      "state": "06-success",
+      "scrollWidth": 390,
+      "clientWidth": 390,
+      "serious": 0,
+      "violations": []
+    },
+    {
+      "width": 390,
+      "state": "07-settings-dark",
+      "scrollWidth": 390,
+      "clientWidth": 390,
+      "serious": 0,
+      "violations": []
+    },
+    {
+      "width": 390,
+      "state": "08-refresh-diff-dark",
+      "scrollWidth": 390,
+      "clientWidth": 390,
+      "serious": 0,
+      "violations": []
+    },
+    {
+      "width": 390,
+      "state": "09-crew-tr-dark",
+      "scrollWidth": 390,
+      "clientWidth": 390,
+      "serious": 0,
+      "violations": []
+    },
+    {
+      "width": 768,
+      "state": "01-welcome",
+      "scrollWidth": 768,
+      "clientWidth": 768,
+      "serious": 0,
+      "violations": []
+    },
+    {
+      "width": 768,
+      "state": "02-tools",
+      "scrollWidth": 768,
+      "clientWidth": 768,
+      "serious": 0,
+      "violations": []
+    },
+    {
+      "width": 768,
+      "state": "03-style",
+      "scrollWidth": 768,
+      "clientWidth": 768,
+      "serious": 0,
+      "violations": []
+    },
+    {
+      "width": 768,
+      "state": "04-crew",
+      "scrollWidth": 768,
+      "clientWidth": 768,
+      "serious": 0,
+      "violations": []
+    },
+    {
+      "width": 768,
+      "state": "05-diff",
+      "scrollWidth": 768,
+      "clientWidth": 768,
+      "serious": 0,
+      "violations": []
+    },
+    {
+      "width": 768,
+      "state": "06-success",
+      "scrollWidth": 768,
+      "clientWidth": 768,
+      "serious": 0,
+      "violations": []
+    },
+    {
+      "width": 768,
+      "state": "07-settings-dark",
+      "scrollWidth": 768,
+      "clientWidth": 768,
+      "serious": 0,
+      "violations": []
+    },
+    {
+      "width": 768,
+      "state": "08-refresh-diff-dark",
+      "scrollWidth": 768,
+      "clientWidth": 768,
+      "serious": 0,
+      "violations": []
+    },
+    {
+      "width": 768,
+      "state": "09-crew-tr-dark",
+      "scrollWidth": 768,
+      "clientWidth": 768,
+      "serious": 0,
+      "violations": []
+    },
+    {
+      "width": 1280,
+      "state": "01-welcome",
+      "scrollWidth": 1280,
+      "clientWidth": 1280,
+      "serious": 0,
+      "violations": []
+    },
+    {
+      "width": 1280,
+      "state": "02-tools",
+      "scrollWidth": 1280,
+      "clientWidth": 1280,
+      "serious": 0,
+      "violations": []
+    },
+    {
+      "width": 1280,
+      "state": "03-style",
+      "scrollWidth": 1280,
+      "clientWidth": 1280,
+      "serious": 0,
+      "violations": []
+    },
+    {
+      "width": 1280,
+      "state": "04-crew",
+      "scrollWidth": 1280,
+      "clientWidth": 1280,
+      "serious": 0,
+      "violations": []
+    },
+    {
+      "width": 1280,
+      "state": "05-diff",
+      "scrollWidth": 1280,
+      "clientWidth": 1280,
+      "serious": 0,
+      "violations": []
+    },
+    {
+      "width": 1280,
+      "state": "06-success",
+      "scrollWidth": 1280,
+      "clientWidth": 1280,
+      "serious": 0,
+      "violations": []
+    },
+    {
+      "width": 1280,
+      "state": "07-settings-dark",
+      "scrollWidth": 1280,
+      "clientWidth": 1280,
+      "serious": 0,
+      "violations": []
+    },
+    {
+      "width": 1280,
+      "state": "08-refresh-diff-dark",
+      "scrollWidth": 1280,
+      "clientWidth": 1280,
+      "serious": 0,
+      "violations": []
+    },
+    {
+      "width": 1280,
+      "state": "09-crew-tr-dark",
+      "scrollWidth": 1280,
+      "clientWidth": 1280,
+      "serious": 0,
+      "violations": []
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+appId: com.ensemble.app
+productName: Ensemble
+directories:
+  output: release
+files:
+  - out/**/*
+  - bin/**/*
+  - dist/core/**/*
+  - catalog/**/*
+  - package.json
+mac:
+  target:
+    - target: dmg
+      arch: [x64, arm64]
+win:
+  target:
+    - target: nsis
+      arch: [x64]
+linux:
+  target:
+    - target: AppImage
+      arch: [x64]
+    - target: deb
+      arch: [x64]
+  maintainer: Ensemble contributors
+  syncDesktopName: true
+  category: Development
+  executableName: ensemble
+  desktop:
+    entry:
+      Name: Ensemble
+      Comment: Reviewable, reversible AI model delegation
+      StartupWMClass: ensemble
+      Keywords: AI;Development;Productivity;
+nsis:
+  oneClick: false
+  perMachine: false
+  allowElevation: false
+  allowToChangeInstallationDirectory: true
+  createDesktopShortcut: true
+  createStartMenuShortcut: true

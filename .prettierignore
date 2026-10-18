@@ -1,0 +1,11 @@
+node_modules
+out
+dist
+.npm-cache
+.electron-cache
+.electron-builder-cache
+.dev-data
+package-lock.json
+test/fixtures
+catalog/*.json
+docs/SPEC.md
