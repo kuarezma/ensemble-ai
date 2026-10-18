@@ -154,7 +154,9 @@ export function score(c: Candidate, role: Role, profile: EngineInput['profile'])
       return profile === 'quality'
         ? 4 * (m.terminalBench ?? 0) + intelligence + (m.knowledgeAccuracy ?? 0) - cost / 20000
         : (100 * (m.terminalBench ?? 0)) /
-            Math.sqrt(Math.max(cost, 1) * scarcity * (profile === 'saver' ? tokenPrice : 1));
+            Math.sqrt(
+              Math.max(cost, 1) * scarcity * (profile === 'saver' ? Math.max(tokenPrice, 0.01) : 1),
+            );
     case 'reviewer':
       return (
         2 * intelligence +

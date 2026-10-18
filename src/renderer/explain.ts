@@ -34,7 +34,13 @@ export function explain(text: string, t: (key: TextKey) => string) {
   ];
   for (const [prefix, key] of reasons) if (text.startsWith(prefix)) return t(key);
   if (text.startsWith('Missing measurements:')) return t('reasonMissing');
-  if (text === 'User selection preserved.') return t('reasonUser');
+  if (
+    text === 'User selection preserved.' ||
+    text === 'Manual' ||
+    text === 'Locked' ||
+    text === t('manual')
+  )
+    return t('reasonUser');
   const audit =
     /^Decision audit required from family \S+: (\S+) (none|low|medium|high|xhigh|max) via /.exec(
       text,

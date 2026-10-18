@@ -19,6 +19,8 @@ import {
   type Candidate,
 } from './policy.js';
 export {
+  allowed,
+  candidatesFor,
   effortOrder,
   justifiedEffort,
   MINIMUM_INTELLIGENCE,

@@ -17,7 +17,7 @@ export function renderRules(rawPlan: Plan, tool: Tool, installedPeers: string[] 
       return `| ${role} | ${cell(a.model)} | ${a.effort} | ${cell(a.via)} | ${cell(a.why.join(' '))} |`;
     }),
   ].join('\n');
-  const peers = tools.filter((t) => installedPeers.includes(t.id));
+  const peers = tools.filter((t) => installedPeers.includes(t.id) && t.id !== tool.id);
   const invocations = peers.length
     ? peers
         .map(

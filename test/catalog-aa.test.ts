@@ -18,6 +18,7 @@ describe('catalog', () => {
       expect(tool.template).toBe('team.md');
       expect(teamTemplate).toContain('{{team}}');
       expect(renderRules(plan(), tool)).not.toContain('{{');
+      expect(renderRules(plan(), tool, [tool.id, 'codex-cli'])).not.toContain(`- ${tool.name}:`);
       if (!tool.verified) expect(tool.globalPath).toBeNull();
     }
     for (const p of subscriptions)

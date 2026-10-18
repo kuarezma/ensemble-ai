@@ -1,16 +1,19 @@
 import type { models, tools, subscriptions } from '../core/catalog.js';
 import type { EngineInput, Model, Plan } from '../core/schemas.js';
+export type Recovery = { id: string; status: 'applied' | 'prepared' | (string & {}) };
 export type Catalog = {
   models: typeof models;
   tools: typeof tools;
   subscriptions: typeof subscriptions;
   platform: string;
   sandbox: boolean;
+  recoveries?: Recovery[];
 };
 export type Preview = {
   id: string;
   files: { path: string; diff: string }[];
   exports: { tool: string; content: string; reason: string }[];
+  warnings?: string[];
 };
 export type UpdateState = {
   currentVersion: string;
@@ -28,7 +31,7 @@ export interface EnsembleAPI {
   catalog(): Promise<Catalog>;
   plan(input: EngineInput): Promise<Plan>;
   preview(tools: string[]): Promise<Preview>;
-  apply(id: string): Promise<{ manifestId: string | null; verified: boolean }>;
+  apply(id: string): Promise<{ manifestId: string | null; verified: boolean; error?: string }>;
   revert(id: string): Promise<void>;
   refresh(consent: boolean): Promise<{ models: Model[]; changes: number }>;
   setKey(key: string): Promise<void>;

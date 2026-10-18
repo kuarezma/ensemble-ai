@@ -9,7 +9,7 @@ import {
   shell,
   session,
 } from 'electron';
-import { mkdir } from 'node:fs/promises';
+import { mkdir, readFile, rename, rm, writeFile } from 'node:fs/promises';
 import { homedir } from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -45,9 +45,16 @@ const service = createService(home);
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 const rendererFile = path.resolve(dirname, '../renderer/index.html');
 const devURL = !app.isPackaged ? process.env.ELECTRON_RENDERER_URL : undefined;
+const keyFile = path.join(data, 'api-key.bin');
 let win: BrowserWindow | undefined;
 let encryptedKey: Buffer | undefined;
 let refreshing = false;
+function secureStorageReady() {
+  return (
+    safeStorage.isEncryptionAvailable() &&
+    !(process.platform === 'linux' && safeStorage.getSelectedStorageBackend() === 'basic_text')
+  );
+}
 function openWindow() {
   win = new BrowserWindow({
     ...windowOptions(process.platform, path.resolve(dirname, '../preload/index.cjs')),
@@ -90,6 +97,14 @@ function handle(channel: string, action: (raw: unknown) => unknown) {
 app.whenReady().then(async () => {
   await mkdir(home, { recursive: true });
   await mkdir(data, { recursive: true });
+  if (secureStorageReady()) {
+    try {
+      const stored = await readFile(keyFile);
+      if (stored.byteLength > 0 && stored.byteLength <= 4096) encryptedKey = stored;
+    } catch {
+      /* No stored key yet. */
+    }
+  }
   nativeTheme.themeSource = 'system';
   // Load Electron integration only at runtime; the state machine has no Electron dependency.
   // electron-updater 6.8 uses this dedicated partition (ElectronHttpExecutor).
@@ -142,18 +157,17 @@ app.whenReady().then(async () => {
   handle('apply', (raw) => service.apply(raw));
   handle('revert', (raw) => service.revert(raw));
   handle('copy', (raw) => clipboard.writeText(z.string().max(2_000_000).parse(raw)));
-  handle('key', (raw) => {
+  handle('key', async (raw) => {
     const key = z.string().max(1024).parse(raw);
     if (!key) {
       encryptedKey = undefined;
+      await rm(keyFile, { force: true });
       return;
     }
-    if (
-      !safeStorage.isEncryptionAvailable() ||
-      (process.platform === 'linux' && safeStorage.getSelectedStorageBackend() === 'basic_text')
-    )
-      throw new Error('Secure storage unavailable');
+    if (!secureStorageReady()) throw new Error('Secure storage unavailable');
     encryptedKey = safeStorage.encryptString(key);
+    await writeFile(keyFile + '.tmp', encryptedKey, { mode: 0o600 });
+    await rename(keyFile + '.tmp', keyFile);
   });
   handle('refresh', async (raw) => {
     const consent = z.boolean().parse(raw);
@@ -188,35 +202,64 @@ app.whenReady().then(async () => {
                           slug: z.string(),
                           name: z.string(),
                           evaluations: z
-                            .object({ artificial_analysis_intelligence_index: z.number() })
-                            .passthrough(),
-                          pricing: z.object({
-                            price_1m_input_tokens: z.number(),
-                            price_1m_output_tokens: z.number(),
-                          }),
-                          median_output_tokens_per_second: z.number().nullable(),
+                            .object({
+                              artificial_analysis_intelligence_index: z
+                                .number()
+                                .nullable()
+                                .optional(),
+                            })
+                            .passthrough()
+                            .nullable()
+                            .optional(),
+                          pricing: z
+                            .object({
+                              price_1m_input_tokens: z.number().nullable().optional(),
+                              price_1m_output_tokens: z.number().nullable().optional(),
+                            })
+                            .passthrough()
+                            .nullable()
+                            .optional(),
+                          median_output_tokens_per_second: z.number().nullable().optional(),
                         })
                         .passthrough(),
                     ),
                   })
                   .parse(JSON.parse(await readBoundedResponseText(response)));
-                // Retain only variants whose effort is documented in the catalog. Never guess an effort.
-                const records = payload.data.flatMap((row) =>
-                  models.flatMap((model) =>
+                // Retain variants whose effort is documented in the catalog or explicitly declared in the slug/name.
+                const records = payload.data.flatMap((row) => {
+                  const intelligenceIndex =
+                    row.evaluations?.artificial_analysis_intelligence_index ?? null;
+                  if (typeof intelligenceIndex !== 'number') return [];
+                  const knownEfforts = models.flatMap((model) =>
                     model.efforts
                       .filter((e) => e.source.endsWith('/' + row.slug))
-                      .map((e) => ({
-                        slug: row.slug,
-                        name: row.name,
-                        shortName: row.name,
-                        effort: { slug: e.effort },
-                        intelligenceIndex: row.evaluations.artificial_analysis_intelligence_index,
-                        price1mInputTokens: row.pricing.price_1m_input_tokens,
-                        price1mOutputTokens: row.pricing.price_1m_output_tokens,
-                        medianOutputTokensPerSecond: row.median_output_tokens_per_second,
-                      })),
-                  ),
-                );
+                      .map((e) => e.effort),
+                  );
+                  const suffix = [
+                    'non-reasoning',
+                    'none',
+                    'low',
+                    'medium',
+                    'high',
+                    'xhigh',
+                    'max',
+                  ].find((e) => row.slug.endsWith('-' + e));
+                  const efforts = knownEfforts.length
+                    ? knownEfforts
+                    : suffix
+                      ? [suffix === 'non-reasoning' ? 'none' : suffix]
+                      : [];
+                  return efforts.map((effort) => ({
+                    slug: row.slug,
+                    name: row.name,
+                    shortName: row.name,
+                    effort: { slug: effort },
+                    intelligenceIndex,
+                    price1mInputTokens: row.pricing?.price_1m_input_tokens ?? null,
+                    price1mOutputTokens: row.pricing?.price_1m_output_tokens ?? null,
+                    medianOutputTokensPerSecond: row.median_output_tokens_per_second ?? null,
+                  }));
+                });
                 return new Response(records.map((r) => JSON.stringify(r)).join('\n'));
               },
             }

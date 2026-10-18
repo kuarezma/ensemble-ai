@@ -43,13 +43,14 @@ export function createService(home: string) {
     async preview(raw: unknown): Promise<Preview & { warnings: string[] }> {
       idle();
       busy = true;
-      pending = undefined;
       try {
         if (!current) throw new Error('Create a plan first');
         const ids = ToolIds.parse(raw);
+        const exportOnly = ids.length === 1 && ids[0] === 'agents-md';
+        if (!exportOnly) pending = undefined;
         const changes = await buildApplyPreview(current, ids, home);
         const id = randomUUID();
-        pending = { id, changes };
+        if (!exportOnly || !pending) pending = { id, changes };
         return {
           id,
           files: changes.map((c) => ({

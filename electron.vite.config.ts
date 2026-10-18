@@ -32,7 +32,7 @@ export default defineConfig(({ command }) => ({
                 )
               : html.replace(
                   "connect-src 'self' ws://localhost:* ws://127.0.0.1:*",
-                  "connect-src 'none'",
+                  "connect-src 'self'",
                 ),
         },
       },

@@ -170,4 +170,9 @@ it('exports a portable plan with assignments and imports it without applying fil
   await user.click(screen.getByRole('button', { name: 'Load configuration' }));
   expect(await screen.findByRole('heading', { name: 'Meet your crew.' })).toBeTruthy();
   expect(api.apply).not.toHaveBeenCalled();
+  // Navigating back to Step 1 and selecting an empty-model subscription tool still exposes all catalog models.
+  await user.click(screen.getByRole('button', { name: 'Back' }));
+  await user.click(screen.getByRole('button', { name: 'Back' }));
+  await user.click(screen.getByRole('checkbox', { name: 'Windsurf' }));
+  expect(screen.getAllByRole('checkbox', { name: 'GPT-6.1 Sol' }).length).toBeGreaterThanOrEqual(2);
 });

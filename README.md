@@ -11,13 +11,13 @@ Packaged apps can check GitHub Releases for updates when automatic update checks
 
 Get the file for your system from the [latest release](https://github.com/kuarezma/ensemble-ai/releases/latest):
 
-| System                              | File                                    |
-| ----------------------------------- | --------------------------------------- |
-| macOS, Apple Silicon (M1 and later) | `Ensemble-<version>-macOS-arm64.dmg`    |
-| macOS, Intel                        | `Ensemble-<version>-macOS-x64.dmg`      |
-| Windows 10/11, 64-bit               | `Ensemble-<version>-Windows-Setup.exe`  |
+| System                              | File                                       |
+| ----------------------------------- | ------------------------------------------ |
+| macOS, Apple Silicon (M1 and later) | `Ensemble-<version>-macOS-arm64.dmg`       |
+| macOS, Intel                        | `Ensemble-<version>-macOS-x64.dmg`         |
+| Windows 10/11, 64-bit               | `Ensemble-<version>-Windows-Setup.exe`     |
 | Linux, any distro                   | `Ensemble-<version>-Linux-x86_64.AppImage` |
-| Linux, Debian/Ubuntu                | `Ensemble-<version>-Linux-amd64.deb`    |
+| Linux, Debian/Ubuntu                | `Ensemble-<version>-Linux-amd64.deb`       |
 
 Files ending in `.zip`, `.blockmap` and `.yml` are used by the in-app updater; you do not need them.
 

@@ -34,13 +34,17 @@ describe('main IPC service', () => {
     await expect(service.apply(preview.id)).rejects.toThrow('File changed since preview');
     expect(await readFile(target, 'utf8')).toBe('User edits\n');
   });
-  it('rejects unknown tools and overlapping mutations', async () => {
+  it('rejects unknown tools and overlapping mutations, and preserves pending preview across agents-md export', async () => {
     const service = createService(await tempHome());
     service.plan(input());
     await expect(service.preview(['unknown'])).rejects.toThrow();
     const pending = service.preview(['codex-cli']);
     expect(() => service.plan(input())).toThrow('Operation in progress');
-    await pending;
+    const filePreview = await pending;
+    const exportPreview = await service.preview(['agents-md']);
+    expect(exportPreview.exports).toHaveLength(1);
+    const applied = await service.apply(filePreview.id);
+    expect(applied.verified).toBe(true);
   });
 });
 

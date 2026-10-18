@@ -8,6 +8,7 @@ export function useUpdates(api: EnsembleAPI) {
   useEffect(() => {
     if (!api) return;
     let active = true;
+    let timer: ReturnType<typeof setInterval> | undefined;
     const poll = () =>
       api
         .update({ type: 'status' })
@@ -15,16 +16,20 @@ export function useUpdates(api: EnsembleAPI) {
           if (active) {
             setState(next);
             setFailure(false);
+            if (next.status === 'dev' && timer) {
+              clearInterval(timer);
+              timer = undefined;
+            }
           }
         })
         .catch(() => {
           if (active) setFailure(true);
         });
     void poll();
-    const timer = setInterval(() => void poll(), 1000);
+    timer = setInterval(() => void poll(), 1000);
     return () => {
       active = false;
-      clearInterval(timer);
+      if (timer) clearInterval(timer);
     };
   }, [api]);
   async function action(value: UpdateAction) {

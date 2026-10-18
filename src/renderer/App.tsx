@@ -4,6 +4,7 @@ import tr from './i18n/tr.json' with { type: 'json' };
 import {
   roles,
   EngineInputSchema,
+  ModelSchema,
   PlanSchema,
   type AccessibleModel,
   type Assignment,
@@ -12,13 +13,11 @@ import {
   type Plan,
   type Role,
 } from '../core/schemas.js';
-import type { Catalog, EnsembleAPI, Preview } from '../shared/api.js';
+import { allowed, candidatesFor } from '../core/engine/policy.js';
+import type { Catalog, EnsembleAPI, Preview, Recovery } from '../shared/api.js';
 import { explain } from './explain.js';
 import { useUpdates, UpdateConsent, UpdateSettings, UpdateBanner } from './Updates.js';
 import { platformAdapter } from './platform/index.js';
-type Recovery = { id: string; status: 'applied' | 'prepared' };
-type RecoveryCatalog = Catalog & { recoveries?: Recovery[] };
-type RecoveryPreview = Preview & { warnings?: string[] };
 export type TextKey = keyof typeof en;
 type Selection = {
   plan: string;
@@ -41,7 +40,7 @@ export function App({ api = window.ensemble }: { api?: EnsembleAPI }) {
   const [manual, setManual] = useState(''),
     [locks, setLocks] = useState<Partial<Record<Role, Assignment>>>({});
   const [plan, setPlan] = useState<Plan>(),
-    [preview, setPreview] = useState<RecoveryPreview>();
+    [preview, setPreview] = useState<Preview>();
   const [targets, setTargets] = useState<string[]>(),
     [manifest, setManifest] = useState<string | null>();
   const [applied, setApplied] = useState(false),
@@ -64,7 +63,7 @@ export function App({ api = window.ensemble }: { api?: EnsembleAPI }) {
     if (api)
       api
         .catalog()
-        .then((result: RecoveryCatalog) => {
+        .then((result: Catalog) => {
           setCatalog(result);
           setRecoveries(result.recoveries ?? []);
         })
@@ -131,12 +130,13 @@ export function App({ api = window.ensemble }: { api?: EnsembleAPI }) {
   ): AccessibleModel[] {
     return Object.entries(selected).flatMap(([via, choice]) => {
       const sub = catalog?.subscriptions.find((s) => s.id === choice.plan);
+      const hasSubModels = Boolean(sub && sub.models.length > 0);
       return data.flatMap((m) => {
         const provisionalAccess = m.provisional && confirmations[m.id]?.includes(via);
         const entry = sub?.models.find((x) => x.model === m.id);
         if (
           choice.hidden.includes(m.id) ||
-          (m.provisional ? !provisionalAccess : sub ? !entry : false)
+          (m.provisional ? !provisionalAccess : hasSubModels ? !entry : false)
         )
           return [];
         const tiers = entry ? m.efforts.filter((e) => entry.efforts.includes(e.effort)) : m.efforts;
@@ -150,15 +150,32 @@ export function App({ api = window.ensemble }: { api?: EnsembleAPI }) {
     });
   }
   const accessible = accessFor();
+  function validEfforts(m: AccessibleModel, role?: Role) {
+    if (!role) return m.efforts;
+    const permitted = new Set(
+      candidatesFor(m)
+        .filter((c) => allowed(c, role))
+        .map((c) => c.effort),
+    );
+    return m.efforts.filter((e) => permitted.has(e.effort));
+  }
   function input(data?: Model[]): EngineInput {
+    const models = accessFor(data);
+    const [manualModel, manualVia] = manual ? manual.split('|') : [];
+    const hasValidManual = Boolean(
+      manualModel &&
+      manualVia &&
+      models.some(
+        (m) =>
+          m.id === manualModel && m.via === manualVia && validEfforts(m, 'orchestrator').length > 0,
+      ),
+    );
     return {
-      accessible: accessFor(data),
+      accessible: models,
       profile,
       tools: Object.keys(selected),
       locks,
-      ...(manual
-        ? { orchestratorOverride: { model: manual.split('|')[0]!, via: manual.split('|')[1]! } }
-        : {}),
+      ...(hasValidManual ? { orchestratorOverride: { model: manualModel!, via: manualVia! } } : {}),
     };
   }
   async function perform(action: () => Promise<void>) {
@@ -184,7 +201,7 @@ export function App({ api = window.ensemble }: { api?: EnsembleAPI }) {
     }
   }
   async function reloadRecoveries() {
-    const result: RecoveryCatalog = await api!.catalog();
+    const result: Catalog = await api!.catalog();
     setRecoveries(result.recoveries ?? []);
     return result.recoveries ?? [];
   }
@@ -245,13 +262,16 @@ export function App({ api = window.ensemble }: { api?: EnsembleAPI }) {
     setApplied(false);
     setPlan(undefined);
     setLocks({});
+    setManual('');
   }
-  function choiceOptions() {
-    return accessible.map((m) => (
-      <option key={m.id + m.via} value={m.id + '|' + m.via}>
-        {m.name} · {catalog?.tools.find((t) => t.id === m.via)?.name}
-      </option>
-    ));
+  function choiceOptions(role?: Role) {
+    return accessible
+      .filter((m) => validEfforts(m, role).length > 0)
+      .map((m) => (
+        <option key={m.id + m.via} value={m.id + '|' + m.via}>
+          {m.name} · {catalog?.tools.find((t) => t.id === m.via)?.name}
+        </option>
+      ));
   }
   const stepKeys = ['welcome', 'tools', 'style', 'crew', 'applyStep'] as const;
   const titles = ['welcomeTitle', 'toolsTitle', 'styleTitle', 'crewTitle', 'applyTitle'] as const;
@@ -531,11 +551,20 @@ export function App({ api = window.ensemble }: { api?: EnsembleAPI }) {
                     raw && typeof raw === 'object' && 'input' in raw ? raw : undefined;
                   if (envelope && 'plan' in envelope) PlanSchema.parse(envelope.plan);
                   const config = EngineInputSchema.parse(envelope ? envelope.input : raw);
-                  const nextModels = [
-                    ...new Map(
-                      [...(catalog?.models ?? []), ...config.accessible].map((m) => [m.id, m]),
-                    ).values(),
-                  ];
+                  const modelMap = new Map(
+                    (catalog?.models ?? []).map((m) => [m.id, structuredClone(m)]),
+                  );
+                  for (const m of config.accessible) {
+                    const existing = modelMap.get(m.id);
+                    if (existing) {
+                      const seen = new Set(existing.efforts.map((e) => e.effort));
+                      for (const effort of m.efforts)
+                        if (!seen.has(effort.effort)) existing.efforts.push(effort);
+                    } else {
+                      modelMap.set(m.id, ModelSchema.parse(m));
+                    }
+                  }
+                  const nextModels = [...modelMap.values()];
                   const nextConfirmed = Object.fromEntries(
                     config.accessible
                       .filter((m) => m.provisional)
@@ -605,12 +634,11 @@ export function App({ api = window.ensemble }: { api?: EnsembleAPI }) {
                 disabled={!plan || busy || !!fresh}
                 onClick={() =>
                   void perform(async () => {
-                    await api.plan(input());
+                    if (!plan) await api.plan(input());
                     const result = await api.preview(['agents-md']);
                     const content = result.exports[0]?.content;
                     if (!content) throw new Error('No rules');
                     await api.copy(content);
-                    setPreview(undefined);
                     setMessage('copied');
                   })
                 }
@@ -711,7 +739,7 @@ export function App({ api = window.ensemble }: { api?: EnsembleAPI }) {
                                 >
                                   <option value="">{t('custom')}</option>
                                   {catalog.subscriptions
-                                    .filter((s) => s.via === tool.id)
+                                    .filter((s) => s.via === tool.id || s.via === 'api-key')
                                     .map((s) => (
                                       <option key={s.id} value={s.id}>
                                         {s.name}
@@ -750,7 +778,9 @@ export function App({ api = window.ensemble }: { api?: EnsembleAPI }) {
                                     );
                                     return (
                                       !m.provisional &&
-                                      (!sub || sub.models.some((s) => s.model === m.id))
+                                      (!sub ||
+                                        sub.models.length === 0 ||
+                                        sub.models.some((s) => s.model === m.id))
                                     );
                                   })
                                   .map((m) => (
@@ -819,9 +849,12 @@ export function App({ api = window.ensemble }: { api?: EnsembleAPI }) {
                       </button>
                       <button
                         aria-pressed={!!manual}
-                        onClick={() =>
-                          setManual(accessible[0] ? `${accessible[0].id}|${accessible[0].via}` : '')
-                        }
+                        onClick={() => {
+                          const first = accessible.find(
+                            (m) => validEfforts(m, 'orchestrator').length > 0,
+                          );
+                          setManual(first ? `${first.id}|${first.via}` : '');
+                        }}
                       >
                         {t('manual')}
                       </button>
@@ -830,7 +863,7 @@ export function App({ api = window.ensemble }: { api?: EnsembleAPI }) {
                       <label>
                         {t('model')}
                         <select value={manual} onChange={(e) => setManual(e.target.value)}>
-                          {choiceOptions()}
+                          {choiceOptions('orchestrator')}
                         </select>
                       </label>
                     )}
@@ -924,10 +957,16 @@ export function App({ api = window.ensemble }: { api?: EnsembleAPI }) {
                                       const m = accessible.find(
                                         (m) => m.id === model && m.via === via,
                                       )!;
+                                      const permitted = validEfforts(m, role);
+                                      const nextEffort = (permitted.find(
+                                        (x) => x.effort === a.effort,
+                                      ) ??
+                                        permitted[0] ??
+                                        m.efforts[0])!.effort;
                                       const assignment = {
                                         model: m.id,
                                         via: m.via,
-                                        effort: m.efforts[0]!.effort,
+                                        effort: nextEffort,
                                         why: [t('manual')],
                                       };
                                       const nextLocks = { ...locks, [role]: assignment };
@@ -952,7 +991,7 @@ export function App({ api = window.ensemble }: { api?: EnsembleAPI }) {
                                     })
                                   }
                                 >
-                                  {choiceOptions()}
+                                  {choiceOptions(role)}
                                 </select>
                               </label>
                               <label>
@@ -970,13 +1009,19 @@ export function App({ api = window.ensemble }: { api?: EnsembleAPI }) {
                                     })
                                   }
                                 >
-                                  {accessible
-                                    .find((m) => m.id === a.model && m.via === a.via)
-                                    ?.efforts.map((e) => (
-                                      <option key={e.effort} value={e.effort}>
-                                        {t(e.effort)}
-                                      </option>
-                                    ))}
+                                  {(accessible.find((m) => m.id === a.model && m.via === a.via)
+                                    ? validEfforts(
+                                        accessible.find(
+                                          (m) => m.id === a.model && m.via === a.via,
+                                        )!,
+                                        role,
+                                      )
+                                    : []
+                                  ).map((e) => (
+                                    <option key={e.effort} value={e.effort}>
+                                      {t(e.effort)}
+                                    </option>
+                                  ))}
                                 </select>
                               </label>
                             </div>

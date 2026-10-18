@@ -163,4 +163,13 @@ describe('engine hard rules', () => {
     p.rules.push({ id: 'custom', text: 'User rule' });
     expect(generatePlan(i)).toEqual(expected);
   });
+  it('handles zero-price models deterministically in saver profile without NaN scores', () => {
+    const i = input('saver');
+    i.accessible.forEach((m) => {
+      m.price = { input: 0, output: 0, cacheRead: 0 };
+    });
+    const first = generatePlan(i);
+    const reversed = generatePlan({ ...i, accessible: [...i.accessible].reverse() });
+    expect(first).toEqual(reversed);
+  });
 });

@@ -241,7 +241,7 @@ export async function applyChanges(
             throw new Error('Rollback conflict; use prepared manifest after resolving edits', {
               cause: error,
             });
-          if (change.before === null) await rm(change.path);
+          if (change.before === null) await rm(change.path, { force: true });
           else
             await atomicWrite(
               root,
@@ -307,7 +307,7 @@ export async function revert(
       const current = await readOptional(entry.path);
       if (current === null || hash(current) !== entry.afterHash)
         throw new Error('File changed during revert');
-      if (before === null) await rm(entry.path);
+      if (before === null) await rm(entry.path, { force: true });
       else await atomicWrite(root, entry.path, before, entry.mode, entry.afterHash);
     }
     manifest.status = 'reverted';
