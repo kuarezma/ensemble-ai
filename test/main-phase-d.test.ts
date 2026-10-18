@@ -96,6 +96,10 @@ it('enforces production CSP, exposes recovery IPC and bounds authenticated main 
   electron.contents.session.webRequest.onHeadersReceived.mockImplementation((handler) => {
     electron.headers = handler;
   });
+  Object.defineProperty(process, 'resourcesPath', {
+    value: '/unused/resources',
+    configurable: true,
+  });
   await import('../src/main/index.js');
   await vi.waitFor(() => expect(electron.headers).toBeDefined());
   const event = { sender: electron.contents, senderFrame: electron.contents.mainFrame };

@@ -64,6 +64,7 @@ blocked before Chromium opened by the macOS sandbox (`bootstrap_check_in Permiss
 the existing screenshots below are from an earlier run, not Phase E visual proof.
 
 <!-- ENSEMBLE:UI-SCREENSHOTS:BEGIN -->
+
 ![Welcome at desktop width](docs/screenshots/1280-01-welcome.png)
 
 ![Crew on mobile in Turkish dark mode](docs/screenshots/390-09-crew-tr-dark.png)
