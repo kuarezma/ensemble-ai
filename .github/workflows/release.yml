@@ -42,7 +42,7 @@ jobs:
           const metadata = readFileSync('release/latest-mac.yml', 'utf8');
           const version = JSON.parse(readFileSync('package.json', 'utf8')).version;
           for (const arch of ['x64', 'arm64']) {
-            const archive = `Ensemble-${version}-${arch}.zip`;
+            const archive = `Ensemble-${version}-macOS-${arch}.zip`;
             assert(metadata.includes(archive), `Missing ${arch} ZIP in latest-mac.yml`);
             assert(existsSync(`release/${archive}`), `Missing ${arch} ZIP artifact`);
           }
