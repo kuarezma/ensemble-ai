@@ -4,7 +4,7 @@ directories:
   output: release
   buildResources: build
 icon: build/icon.png
-afterPack: build/adhoc-sign.cjs
+afterPack: build/adhoc-sign.mjs
 extraResources:
   - from: build/icon.png
     to: icon.png
