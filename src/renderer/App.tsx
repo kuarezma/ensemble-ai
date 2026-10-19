@@ -914,6 +914,9 @@ export function App({ api = window.ensemble }: { api?: EnsembleAPI }) {
                             <strong>
                               {catalog?.models.find((m) => m.id === a.model)?.name ?? a.model}
                             </strong>
+                            <span className="muted">
+                              {catalog?.tools.find((x) => x.id === a.via)?.name ?? a.via}
+                            </span>
                             <span className="chip">
                               <Tip text="effortTip">{t(a.effort)}</Tip>
                             </span>
@@ -1068,18 +1071,34 @@ export function App({ api = window.ensemble }: { api?: EnsembleAPI }) {
                       </div>
                       <h2>{t('ready')}</h2>
                       <p>{t(manifest ? 'success' : 'unchanged')}</p>
-                      {manifest && (
+                      <div className="button-row">
+                        <button className="primary" disabled={busy} onClick={() => window.close()}>
+                          {t('finish')}
+                        </button>
                         <button
                           disabled={busy}
-                          onClick={() =>
-                            void perform(async () => {
-                              await revertTransaction(manifest);
-                            })
-                          }
+                          onClick={() => {
+                            setApplied(false);
+                            setManifest(null);
+                            setPreview(undefined);
+                            setStep(3);
+                          }}
                         >
-                          {t('revert')}
+                          {t('backToCrew')}
                         </button>
-                      )}
+                        {manifest && (
+                          <button
+                            disabled={busy}
+                            onClick={() =>
+                              void perform(async () => {
+                                await revertTransaction(manifest);
+                              })
+                            }
+                          >
+                            {t('revert')}
+                          </button>
+                        )}
+                      </div>
                     </div>
                   ) : (
                     <>

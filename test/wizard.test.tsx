@@ -70,6 +70,8 @@ describe('wizard', () => {
     expect(api.apply).not.toHaveBeenCalled();
     await user.click(screen.getByRole('button', { name: 'Apply to selected tools' }));
     expect(await screen.findByRole('heading', { name: 'Your crew is ready.' })).toBeTruthy();
+    expect(screen.getByRole('button', { name: 'Finish' })).toBeTruthy();
+    expect(screen.getByRole('button', { name: 'Back to my crew' })).toBeTruthy();
     await user.click(screen.getByRole('button', { name: 'Revert changes' }));
     expect(api.revert).toHaveBeenCalledWith('transaction');
     expect(await screen.findByRole('status')).toHaveProperty(

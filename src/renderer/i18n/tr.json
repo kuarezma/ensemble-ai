@@ -97,6 +97,8 @@
   "ready": "Ekibiniz hazır.",
   "success": "Değişiklikler uygulandı ve doğrulandı. İhtiyaç duyarsanız yedekleriniz hazır.",
   "revert": "Değişiklikleri geri al",
+  "finish": "Bitir",
+  "backToCrew": "Ekibime dön",
   "reverted": "Değişiklikler geri alındı. Önceki dosyalarınız geri yüklendi.",
   "unchanged": "Her şey zaten güncel.",
   "copy": "Kuralları kopyala",

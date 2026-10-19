@@ -26,6 +26,13 @@ export {
   MINIMUM_INTELLIGENCE,
   MARGINAL_GAIN_THRESHOLD,
 } from './policy.js';
+// Equal-scoring pools tie-break toward the model vendor's own tool before alphabetical order.
+const NATIVE_TOOL: Record<string, string> = {
+  claude: 'claude-code',
+  gpt: 'codex-cli',
+  gemini: 'gemini-cli',
+};
+const isNative = (c: Candidate) => (NATIVE_TOOL[c.model.family] === c.model.via ? 0 : 1);
 export const rules = [
   {
     id: 'independent-review',
@@ -84,6 +91,7 @@ export function generatePlan(rawInput: EngineInput): Plan {
     return eligible.sort(
       (a, b) =>
         score(b, role, input.profile) - score(a, role, input.profile) ||
+        isNative(a) - isNative(b) ||
         `${a.model.id}:${a.model.via}:${a.effort}`.localeCompare(
           `${b.model.id}:${b.model.via}:${b.effort}`,
           'en',

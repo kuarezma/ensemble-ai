@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { generatePlan, justifiedEffort } from '../src/core/engine/index.js';
 import { PlanSchema, roles } from '../src/core/schemas.js';
+import { models } from '../src/core/catalog.js';
 import { access, input } from './helpers.js';
 const family = (id: string) => access().find((m) => m.id === id)!.family;
 describe('engine hard rules', () => {
@@ -171,5 +172,21 @@ describe('engine hard rules', () => {
     const first = generatePlan(i);
     const reversed = generatePlan({ ...i, accessible: [...i.accessible].reverse() });
     expect(first).toEqual(reversed);
+  });
+});
+
+describe('native tool tie-break', () => {
+  it('prefers the vendor tool when the same model is reachable through several tools', () => {
+    const accessible = ['antigravity', 'codex-cli'].flatMap((via) =>
+      models
+        .filter((m) => m.id === 'gpt-6-1-sol')
+        .map((m) => ({ ...m, via, scarcity: 2 as const })),
+    );
+    const plan = generatePlan({
+      accessible,
+      profile: 'balanced',
+      tools: ['antigravity', 'codex-cli'],
+    });
+    expect(plan.assignments.builder.via).toBe('codex-cli');
   });
 });

@@ -97,6 +97,8 @@
   "ready": "Your crew is ready.",
   "success": "Changes applied and verified. Your backups are ready if you need them.",
   "revert": "Revert changes",
+  "finish": "Finish",
+  "backToCrew": "Back to my crew",
   "reverted": "Changes reverted. Your original files are restored.",
   "unchanged": "Everything is already up to date.",
   "copy": "Copy rules",
