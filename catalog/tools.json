@@ -107,17 +107,25 @@
     "id": "windsurf",
     "name": "Windsurf",
     "vendor": "Windsurf",
-    "platforms": [],
+    "platforms": [
+      "darwin",
+      "linux",
+      "win32"
+    ],
     "format": "markdown",
-    "globalPath": null,
+    "globalPath": {
+      "darwin": ".codeium/windsurf/memories/global_rules.md",
+      "win32": "%USERPROFILE%/.codeium/windsurf/memories/global_rules.md",
+      "linux": ".codeium/windsurf/memories/global_rules.md"
+    },
     "projectPath": null,
-    "verified": false,
+    "verified": true,
     "template": "team.md",
     "subagents": null,
     "cliDelegation": null,
     "headlessCli": null,
-    "source": null,
-    "notes": "Copy rules export only; persistence and delegation not verified."
+    "source": "https://docs.windsurf.com/windsurf/cascade/memories",
+    "notes": "Global rules file confirmed from vendor documentation (Oct 2026). Ensemble owns only its managed block; the rest of the file is never touched."
   },
   {
     "id": "zed",
@@ -171,33 +179,49 @@
     "id": "cline",
     "name": "Cline",
     "vendor": "Cline",
-    "platforms": [],
+    "platforms": [
+      "darwin",
+      "linux",
+      "win32"
+    ],
     "format": "markdown",
-    "globalPath": null,
+    "globalPath": {
+      "darwin": "Documents/Cline/Rules/ensemble.md",
+      "win32": "%USERPROFILE%/Documents/Cline/Rules/ensemble.md",
+      "linux": "Documents/Cline/Rules/ensemble.md"
+    },
     "projectPath": null,
-    "verified": false,
+    "verified": true,
     "template": "team.md",
     "subagents": null,
     "cliDelegation": null,
     "headlessCli": null,
-    "source": null,
-    "notes": "Copy rules export only; persistence and delegation not verified."
+    "source": "https://docs.cline.bot/customization/cline-rules",
+    "notes": "Global rules file confirmed from vendor documentation (Oct 2026). Ensemble owns only its managed block; the rest of the file is never touched."
   },
   {
     "id": "roo-code",
     "name": "Roo Code",
     "vendor": "Roo Code",
-    "platforms": [],
+    "platforms": [
+      "darwin",
+      "linux",
+      "win32"
+    ],
     "format": "markdown",
-    "globalPath": null,
+    "globalPath": {
+      "darwin": ".roo/rules/ensemble.md",
+      "win32": "%USERPROFILE%/.roo/rules/ensemble.md",
+      "linux": ".roo/rules/ensemble.md"
+    },
     "projectPath": null,
-    "verified": false,
+    "verified": true,
     "template": "team.md",
     "subagents": null,
     "cliDelegation": null,
     "headlessCli": null,
-    "source": null,
-    "notes": "Copy rules export only; persistence and delegation not verified."
+    "source": "https://docs.roocode.com/features/custom-instructions",
+    "notes": "Global rules file confirmed from vendor documentation (Oct 2026). Ensemble owns only its managed block; the rest of the file is never touched."
   },
   {
     "id": "kilo-code",
@@ -251,65 +275,97 @@
     "id": "opencode",
     "name": "opencode",
     "vendor": "opencode",
-    "platforms": [],
+    "platforms": [
+      "darwin",
+      "linux",
+      "win32"
+    ],
     "format": "markdown",
-    "globalPath": null,
+    "globalPath": {
+      "darwin": ".config/opencode/AGENTS.md",
+      "win32": "%USERPROFILE%/.config/opencode/AGENTS.md",
+      "linux": ".config/opencode/AGENTS.md"
+    },
     "projectPath": null,
-    "verified": false,
+    "verified": true,
     "template": "team.md",
     "subagents": null,
     "cliDelegation": null,
-    "headlessCli": null,
-    "source": null,
-    "notes": "Copy rules export only; persistence and delegation not verified."
+    "headlessCli": "opencode run -m <provider/model> \"<prompt>\"",
+    "source": "https://opencode.ai/docs/rules",
+    "notes": "Global rules file confirmed from vendor documentation (Oct 2026). Ensemble owns only its managed block; the rest of the file is never touched."
   },
   {
     "id": "goose",
     "name": "Goose",
     "vendor": "Block",
-    "platforms": [],
+    "platforms": [
+      "darwin",
+      "linux",
+      "win32"
+    ],
     "format": "markdown",
-    "globalPath": null,
+    "globalPath": {
+      "darwin": ".config/goose/.goosehints",
+      "win32": "%APPDATA%/Block/goose/config/.goosehints",
+      "linux": ".config/goose/.goosehints"
+    },
     "projectPath": null,
-    "verified": false,
+    "verified": true,
     "template": "team.md",
     "subagents": null,
     "cliDelegation": null,
     "headlessCli": null,
-    "source": null,
-    "notes": "Copy rules export only; persistence and delegation not verified."
+    "source": "https://block.github.io/goose/docs/guides/using-goosehints",
+    "notes": "Global rules file confirmed from vendor documentation (Oct 2026). Ensemble owns only its managed block; the rest of the file is never touched."
   },
   {
     "id": "amp",
     "name": "Amp",
     "vendor": "Amp",
-    "platforms": [],
+    "platforms": [
+      "darwin",
+      "linux",
+      "win32"
+    ],
     "format": "markdown",
-    "globalPath": null,
+    "globalPath": {
+      "darwin": ".config/amp/AGENTS.md",
+      "win32": "%USERPROFILE%/.config/amp/AGENTS.md",
+      "linux": ".config/amp/AGENTS.md"
+    },
     "projectPath": null,
-    "verified": false,
+    "verified": true,
     "template": "team.md",
     "subagents": null,
     "cliDelegation": null,
     "headlessCli": null,
-    "source": null,
-    "notes": "Copy rules export only; persistence and delegation not verified."
+    "source": "https://ampcode.com/manual",
+    "notes": "Global rules file confirmed from vendor documentation (Oct 2026). Ensemble owns only its managed block; the rest of the file is never touched."
   },
   {
     "id": "kiro",
     "name": "Kiro",
     "vendor": "AWS",
-    "platforms": [],
+    "platforms": [
+      "darwin",
+      "linux",
+      "win32"
+    ],
     "format": "markdown",
-    "globalPath": null,
+    "globalPath": {
+      "darwin": ".kiro/steering/ensemble.md",
+      "win32": "%USERPROFILE%/.kiro/steering/ensemble.md",
+      "linux": ".kiro/steering/ensemble.md"
+    },
     "projectPath": null,
-    "verified": false,
+    "verified": true,
     "template": "team.md",
     "subagents": null,
     "cliDelegation": null,
     "headlessCli": null,
-    "source": null,
-    "notes": "Copy rules export only; persistence and delegation not verified."
+    "source": "https://kiro.dev/docs/steering/",
+    "notes": "Global rules file confirmed from vendor documentation (Oct 2026). Ensemble owns only its managed block; the rest of the file is never touched."
   },
   {
     "id": "trae",
@@ -363,17 +419,25 @@
     "id": "qwen-code",
     "name": "Qwen Code",
     "vendor": "Alibaba",
-    "platforms": [],
+    "platforms": [
+      "darwin",
+      "linux",
+      "win32"
+    ],
     "format": "markdown",
-    "globalPath": null,
+    "globalPath": {
+      "darwin": ".qwen/QWEN.md",
+      "win32": "%USERPROFILE%/.qwen/QWEN.md",
+      "linux": ".qwen/QWEN.md"
+    },
     "projectPath": null,
-    "verified": false,
+    "verified": true,
     "template": "team.md",
     "subagents": null,
     "cliDelegation": null,
     "headlessCli": null,
-    "source": null,
-    "notes": "Copy rules export only; persistence and delegation not verified."
+    "source": "https://github.com/QwenLM/qwen-code",
+    "notes": "Global rules file confirmed from vendor documentation (Oct 2026). Ensemble owns only its managed block; the rest of the file is never touched."
   },
   {
     "id": "droid",

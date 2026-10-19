@@ -665,7 +665,15 @@ export function App({ api = window.ensemble }: { api?: EnsembleAPI }) {
                     <span className="orbit five" />
                     <span className="orbit six" />
                     <span className="art-center">
-                      e<span>·</span>
+                      <svg viewBox="0 0 1024 1024" width="96" height="96" aria-hidden="true">
+                        <rect x="100" y="100" width="824" height="824" rx="190" fill="#2c48b8" />
+                        <rect x="330" y="470" width="310" height="84" rx="42" fill="#25c7a2" />
+                        <g fill="#fff">
+                          <rect x="296" y="286" width="84" height="452" rx="42" />
+                          <rect x="296" y="286" width="392" height="84" rx="42" />
+                          <rect x="296" y="654" width="392" height="84" rx="42" />
+                        </g>
+                      </svg>
                     </span>
                   </div>
                   <div className="card consent">

@@ -21,6 +21,14 @@ Get the file for your system from the [latest release](https://github.com/kuarez
 
 Files ending in `.zip`, `.blockmap` and `.yml` are used by the in-app updater; you do not need them.
 
+## Startup speed
+
+The window opens as soon as Electron is ready; keychain access, the updater and recovery scans run in the
+background. On Apple Silicon a warm start paints in about 0.35 s and a step switch takes one frame
+(`node scripts/measure-startup.mjs` and `scripts/measure-interaction.mjs` reproduce the numbers). The very first
+launch of a freshly downloaded, unsigned app can take a second or more because macOS scans it once; use the
+arm64 build on Apple Silicon (the x64 build runs under Rosetta and starts slower).
+
 ## Setup and checks
 
 Node **22.12+** is recommended/required by the packaging dependency tree. Run from this checkout.
@@ -134,10 +142,12 @@ for revert. A dry-run returns changes, unified diffs and copy exports without cr
 An apply creates backups and a manifest under the **supplied** home's `.ensemble/backups` directory.
 It never runs delegation commands. Reapplying an identical plan creates no transaction.
 
-Only documented default global/project paths for Claude Code, Codex CLI and Gemini CLI are enabled.
-Universal AGENTS.md is an explicit project export. All other 22 clients have `globalPath:null`,
-`projectPath:null`, `verified:false`; their complete rendered rules appear in `exports` for manual copying.
-Their platform support and delegation capabilities remain unverified, represented by empty/null values.
+Eleven clients write to a documented global rules file: Claude Code, Codex CLI, Gemini CLI, opencode,
+Windsurf, Cline, Roo Code, Kiro, Amp, Goose and Qwen Code (paths and sources in `catalog/tools.json`).
+Universal AGENTS.md is an explicit project export. The other 15 clients have either no file-based global
+location (for example Cursor and Warp keep user rules in their own settings) or a path we could not confirm
+from vendor documentation; they have `globalPath:null`, `verified:false`, and their complete rendered rules
+appear in `exports` for manual copying.
 See [tools.json](catalog/tools.json) for per-tool sources and flags. Custom client configuration can override documented paths.
 
 Claude subagent files have YAML frontmatter first, with a managed YAML comment block and a separate

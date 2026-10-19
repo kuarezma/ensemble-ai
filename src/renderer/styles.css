@@ -387,18 +387,16 @@ kbd {
   font-size: 68px;
   font-weight: 700;
   color: var(--accent);
-  border: 1px solid var(--line);
+  border: 0;
   border-radius: 28px;
-  background: var(--surface);
+  background: transparent;
   width: 100px;
   height: 100px;
   box-shadow: 0 16px 60px #345cc917;
 }
-.art-center span {
-  position: absolute;
-  right: 12px;
-  bottom: 4px;
-  color: var(--positive);
+.art-center svg {
+  width: 100%;
+  height: 100%;
 }
 .orbit {
   position: absolute;

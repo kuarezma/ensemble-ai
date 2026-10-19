@@ -206,3 +206,20 @@ describe('file pipeline in synthetic HOME only', () => {
     expect(await readFile(file)).toEqual(Buffer.from([0xff, 0xfe, 0x61]));
   });
 });
+
+describe('vendor-documented global rules files', () => {
+  const ids = ['opencode', 'windsurf', 'cline', 'roo-code', 'kiro', 'amp', 'goose', 'qwen-code'];
+  it.each(['darwin', 'linux', 'win32'] as const)(
+    'writes a managed block for each documented tool on %s inside the synthetic home',
+    async (platform) => {
+      const home = await tempHome();
+      const preview = await buildApplyPreview(plan(), ids, home, [], platform);
+      expect(preview.exports).toEqual([]);
+      expect(preview).toHaveLength(ids.length);
+      for (const change of preview) {
+        expect(path.resolve(change.path).startsWith(path.resolve(home) + path.sep)).toBe(true);
+        expect(change.after).toContain('ENSEMBLE:BEGIN');
+      }
+    },
+  );
+});

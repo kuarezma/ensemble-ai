@@ -19,7 +19,6 @@ import { refreshAA, readBoundedResponseText } from '../core/aa/refresh.js';
 import { targetHome, createService } from './service.js';
 import { trustedRendererURL, rendererCSP } from './security.js';
 import { windowOptions, linuxDataDir } from './window.js';
-import electronUpdater from 'electron-updater';
 import {
   updateRequestPolicy,
   isSignedMacApp,
@@ -30,6 +29,13 @@ import {
   allowedUpdateURL,
   type UpdaterPort,
 } from './updater.js';
+const mark = process.env.ENSEMBLE_PERF
+  ? (label: string) =>
+      console.log(
+        `[perf] ${label} +${Math.round(Date.now() - (process.getCreationTime() ?? Date.now()))}ms`,
+      )
+  : () => undefined;
+mark('main-loaded');
 const home = targetHome(app.isPackaged, homedir(), process.cwd(), process.env.ENSEMBLE_HOME);
 const sandbox = !app.isPackaged || !!process.env.ENSEMBLE_HOME;
 const data = sandbox
@@ -57,7 +63,11 @@ function secureStorageReady() {
 }
 function openWindow() {
   win = new BrowserWindow({
-    ...windowOptions(process.platform, path.resolve(dirname, '../preload/index.cjs')),
+    ...windowOptions(
+      process.platform,
+      path.resolve(dirname, '../preload/index.cjs'),
+      nativeTheme.shouldUseDarkColors,
+    ),
     ...(process.platform !== 'darwin'
       ? {
           icon: app.isPackaged
@@ -81,22 +91,28 @@ function openWindow() {
   win.webContents.session.setPermissionRequestHandler((_contents, _permission, callback) =>
     callback(false),
   );
-  win.once('ready-to-show', () => win?.show());
+  win.once('show', () => mark('window-shown'));
+  win.webContents.on('did-finish-load', () => mark('renderer-loaded'));
+  win.once('ready-to-show', () => {
+    mark('first-paint');
+    win?.show();
+  });
   if (devURL) void win.loadURL(devURL);
   else void win.loadFile(rendererFile);
 }
+let dirsReady: Promise<unknown> = Promise.resolve();
 function handle(channel: string, action: (raw: unknown) => unknown) {
   ipcMain.handle('ensemble:' + channel, (event, raw: unknown) => {
     const frame = event.senderFrame;
     const trusted = frame && trustedRendererURL(frame.url, rendererFile, devURL);
     if (!win || event.sender !== win.webContents || frame !== win.webContents.mainFrame || !trusted)
       throw new Error('Unauthorized IPC');
-    return action(raw);
+    return dirsReady.then(() => action(raw));
   });
 }
-app.whenReady().then(async () => {
-  await mkdir(home, { recursive: true });
-  await mkdir(data, { recursive: true });
+// Slow work (keychain, codesign probe, updater import) runs off the window's critical path.
+async function bootstrap() {
+  await dirsReady;
   if (secureStorageReady()) {
     try {
       const stored = await readFile(keyFile);
@@ -105,7 +121,6 @@ app.whenReady().then(async () => {
       /* No stored key yet. */
     }
   }
-  nativeTheme.themeSource = 'system';
   // Load Electron integration only at runtime; the state machine has no Electron dependency.
   // electron-updater 6.8 uses this dedicated partition (ElectronHttpExecutor).
   // Strip its persistent staging identifier and block unrelated network destinations.
@@ -114,6 +129,7 @@ app.whenReady().then(async () => {
     .webRequest.onBeforeSendHeaders((details, callback) => {
       callback(updateRequestPolicy(details.url, details.requestHeaders));
     });
+  const { default: electronUpdater } = await import('electron-updater');
   const { autoUpdater } = electronUpdater;
   const updaterPort: UpdaterPort = autoUpdater;
   autoUpdater.setFeedURL({ provider: 'github', owner: 'kuarezma', repo: 'ensemble-ai' });
@@ -131,11 +147,30 @@ app.whenReady().then(async () => {
     persist: (enabled) => writeUpdateConsent(data, enabled),
   });
   app.on('before-quit', () => updates.stop());
+  return { updates };
+}
+app.whenReady().then(() => {
+  dirsReady = Promise.all([mkdir(home, { recursive: true }), mkdir(data, { recursive: true })]);
+  nativeTheme.themeSource = 'system';
+  mark('app-ready');
+  openWindow();
+  mark('window-created');
+  Menu.setApplicationMenu(
+    Menu.buildFromTemplate([
+      ...(process.platform === 'darwin' ? [{ role: 'appMenu' as const }] : []),
+      { role: 'editMenu' },
+      { role: 'viewMenu' },
+      { role: 'windowMenu' },
+    ]),
+  );
+  const boot = bootstrap();
+  boot.catch(() => undefined);
   const UpdateActionSchema = z.discriminatedUnion('type', [
     z.object({ type: z.enum(['status', 'check', 'restart', 'download', 'notes']) }).strict(),
     z.object({ type: z.literal('configure'), enabled: z.boolean() }).strict(),
   ]);
   handle('update', async (raw) => {
+    const { updates } = await boot;
     const action = UpdateActionSchema.parse(raw);
     if (action.type === 'configure') await updates.setEnabled(action.enabled);
     if (action.type === 'check') void updates.check();
@@ -145,7 +180,6 @@ app.whenReady().then(async () => {
     }
     return updates.snapshot();
   });
-  await service.recoveries();
   handle('catalog', async () => ({
     ...service.catalog(),
     platform: process.platform,
@@ -158,6 +192,7 @@ app.whenReady().then(async () => {
   handle('revert', (raw) => service.revert(raw));
   handle('copy', (raw) => clipboard.writeText(z.string().max(2_000_000).parse(raw)));
   handle('key', async (raw) => {
+    await boot;
     const key = z.string().max(1024).parse(raw);
     if (!key) {
       encryptedKey = undefined;
@@ -172,6 +207,7 @@ app.whenReady().then(async () => {
   handle('refresh', async (raw) => {
     const consent = z.boolean().parse(raw);
     if (!consent) return { models, changes: 0 };
+    await boot;
     if (refreshing) throw new Error('Refresh in progress');
     refreshing = true;
     try {
@@ -270,15 +306,6 @@ app.whenReady().then(async () => {
       refreshing = false;
     }
   });
-  Menu.setApplicationMenu(
-    Menu.buildFromTemplate([
-      ...(process.platform === 'darwin' ? [{ role: 'appMenu' as const }] : []),
-      { role: 'editMenu' },
-      { role: 'viewMenu' },
-      { role: 'windowMenu' },
-    ]),
-  );
-  openWindow();
   app.on('activate', () => {
     if (!BrowserWindow.getAllWindows().length) openWindow();
   });
