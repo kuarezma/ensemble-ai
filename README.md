@@ -21,6 +21,11 @@ Get the file for your system from the [latest release](https://github.com/kuarez
 
 Files ending in `.zip`, `.blockmap` and `.yml` are used by the in-app updater; you do not need them.
 
+## macOS: "Ensemble.app is damaged"
+
+Builds before 0.1.5 had a broken bundle seal, which Apple Silicon reports as "damaged". Install 0.1.5 or later.
+If macOS still blocks a downloaded copy, run `xattr -cr /Applications/Ensemble.app` once, or right-click the app and choose Open.
+
 ## Startup speed
 
 The window opens as soon as Electron is ready; keychain access, the updater and recovery scans run in the

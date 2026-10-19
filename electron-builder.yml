@@ -4,6 +4,7 @@ directories:
   output: release
   buildResources: build
 icon: build/icon.png
+afterPack: build/adhoc-sign.cjs
 extraResources:
   - from: build/icon.png
     to: icon.png
@@ -19,6 +20,8 @@ files:
   - package.json
 mac:
   icon: build/icon.png
+  # Not signed by electron-builder; build/adhoc-sign.cjs seals the bundle ad hoc instead.
+  identity: null
   artifactName: Ensemble-${version}-macOS-${arch}.${ext}
   target:
     - target: dmg
