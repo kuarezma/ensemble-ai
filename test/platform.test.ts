@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { platformAdapter } from '../src/renderer/platform/index.js';
 import { windowOptions, linuxDataDir } from '../src/main/window.js';
-import { targetHome } from '../src/main/service.js';
+import { targetHome, writesToSandbox } from '../src/main/service.js';
 import path from 'node:path';
 describe('platform boundaries', () => {
   it.each([
@@ -39,5 +39,10 @@ describe('platform boundaries', () => {
     expect(targetHome(true, '/real', '/checkout', '/override')).toBe(path.resolve('/override'));
     expect(targetHome(true, '/real', '/checkout')).toBe(path.resolve('/real'));
     expect(() => targetHome(false, '/real', '/checkout', '../escape')).toThrow();
+  });
+  it('shows the sandbox notice only when the target is not the real home', () => {
+    expect(writesToSandbox(true, '/checkout/.sandbox-home', '/real')).toBe(true);
+    expect(writesToSandbox(true, '/real', '/real')).toBe(false);
+    expect(writesToSandbox(false, '/real', '/real')).toBe(false);
   });
 });

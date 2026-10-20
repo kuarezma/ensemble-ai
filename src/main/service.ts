@@ -18,6 +18,10 @@ import type { Preview } from '../shared/api.js';
 export function targetHome(packaged: boolean, realHome: string, cwd: string, override?: string) {
   return absoluteRoot(override || (packaged ? realHome : path.join(cwd, '.sandbox-home')));
 }
+/** The "real home is untouched" notice is only true when the target is not the user's actual home. */
+export function writesToSandbox(sandbox: boolean, home: string, realHome: string) {
+  return sandbox && path.resolve(home) !== path.resolve(realHome);
+}
 const ToolIds = z
   .array(z.string())
   .min(1)

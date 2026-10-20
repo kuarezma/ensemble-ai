@@ -16,7 +16,7 @@ import { fileURLToPath } from 'node:url';
 import { z } from 'zod';
 import { models } from '../core/catalog.js';
 import { refreshAA, readBoundedResponseText } from '../core/aa/refresh.js';
-import { targetHome, createService } from './service.js';
+import { targetHome, writesToSandbox, createService } from './service.js';
 import { trustedRendererURL, rendererCSP } from './security.js';
 import { windowOptions, linuxDataDir } from './window.js';
 import {
@@ -183,7 +183,7 @@ app.whenReady().then(() => {
   handle('catalog', async () => ({
     ...service.catalog(),
     platform: process.platform,
-    sandbox,
+    sandbox: writesToSandbox(sandbox, home, homedir()),
     recoveries: (await service.recoveries()).map(({ id, status }) => ({ id, status })),
   }));
   handle('plan', (raw) => service.plan(raw));
