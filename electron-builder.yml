@@ -20,7 +20,7 @@ files:
   - package.json
 mac:
   icon: build/icon.png
-  # Not signed by electron-builder; build/adhoc-sign.cjs seals the bundle ad hoc instead.
+  # Not signed by electron-builder; build/adhoc-sign.mjs seals the bundle ad hoc instead.
   identity: null
   artifactName: Ensemble-${version}-macOS-${arch}.${ext}
   target:

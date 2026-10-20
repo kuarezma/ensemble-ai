@@ -91,7 +91,6 @@ blocked before Chromium opened by the macOS sandbox (`bootstrap_check_in Permiss
 the existing screenshots below are from an earlier run, not Phase E visual proof.
 
 <!-- ENSEMBLE:UI-SCREENSHOTS:BEGIN -->
-
 ![Welcome at desktop width](docs/screenshots/1280-01-welcome.png)
 
 ![Crew on mobile in Turkish dark mode](docs/screenshots/390-09-crew-tr-dark.png)
@@ -200,7 +199,7 @@ Filesystem checks cannot protect against a hostile process swapping ancestor dir
 Beş adımlı React sihirbazı, ayarlar, EN/TR dil seçimi, açık/koyu tema, güvenli IPC,
 plan önizlemesi ve açık onayla uygulama/geri alma içerir. `npm test`, `npm run typecheck`, `npm run lint` ve
 `npm run build` ile kontrol edilir. Geliştirmede gerçek HOME yerine açıkça belirtilen boş bir deneme
-klasörü kullanılır. Doğrulanamayan 22 istemci için dosyaya otomatik yazılmaz; kopyalanabilir kurallar
+klasörü kullanılır. Doğrulanamayan 15 istemci için dosyaya otomatik yazılmaz; kopyalanabilir kurallar
 üretilir. Plan erişimleri ve kıtlık değerleri tahminidir, kesin kota iddiası değildir.
 
 Masaüstü uygulamasındaki Geri Al, oturumda uygulanan işlemleri geri alır. Yeniden başlatma sonrası
