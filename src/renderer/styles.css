@@ -700,6 +700,26 @@ details ol {
 .success p {
   color: var(--muted);
 }
+.success p.error {
+  color: var(--error);
+}
+.tool-results {
+  margin: 16px auto;
+  padding: 0;
+  max-width: 560px;
+  list-style: none;
+  text-align: left;
+  line-height: 1.6;
+}
+.tool-results li {
+  padding: 8px 0;
+  border-bottom: 1px solid var(--line);
+  overflow-wrap: anywhere;
+}
+.tool-results code,
+.tool-results span {
+  display: block;
+}
 .notice {
   margin: 16px 40px;
   padding: 16px;

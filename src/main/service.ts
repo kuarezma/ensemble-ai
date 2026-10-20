@@ -11,6 +11,7 @@ import {
   type ApplyPreview,
   ApplyRecoveryError,
   listRecoveryManifests,
+  verifyToolTargets,
 } from '../core/apply/index.js';
 import { absoluteRoot } from '../core/apply/paths.js';
 import type { Preview } from '../shared/api.js';
@@ -25,7 +26,7 @@ const ToolIds = z
 /** Only server-owned previews can reach the core writer. Each preview is single use. */
 export function createService(home: string) {
   let current: Plan | undefined;
-  let pending: { id: string; changes: ApplyPreview } | undefined;
+  let pending: { id: string; changes: ApplyPreview; plan: Plan; ids: string[] } | undefined;
   let busy = false;
 
   function idle() {
@@ -50,7 +51,7 @@ export function createService(home: string) {
         if (!exportOnly) pending = undefined;
         const changes = await buildApplyPreview(current, ids, home);
         const id = randomUUID();
-        if (!exportOnly || !pending) pending = { id, changes };
+        if (!exportOnly || !pending) pending = { id, changes, plan: current, ids };
         return {
           id,
           files: changes.map((c) => ({
@@ -69,11 +70,15 @@ export function createService(home: string) {
       const id = z.string().uuid().parse(raw);
       if (!pending || pending.id !== id) throw new Error('Preview expired');
       busy = true;
-      const changes = pending.changes;
+      const { changes, plan, ids } = pending;
       pending = undefined;
       try {
         const manifest = await applyChanges(changes, home);
-        return { manifestId: manifest?.id ?? null, verified: true };
+        const tools = (await verifyToolTargets(plan, ids, home)).map((result) => ({
+          ...result,
+          path: result.path && '~/' + path.relative(home, result.path).replaceAll(path.sep, '/'),
+        }));
+        return { manifestId: manifest?.id ?? null, verified: true, tools };
       } catch (error) {
         if (error instanceof ApplyRecoveryError)
           return { manifestId: error.manifestId, verified: false, error: error.message };

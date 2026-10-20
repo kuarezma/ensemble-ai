@@ -41,6 +41,19 @@ describe('wizard', () => {
   it('finishes five steps, reviews a diff, applies explicitly and reverts', async () => {
     const api = mockAPI(),
       user = userEvent.setup();
+    api.apply = vi.fn(async () => ({
+      manifestId: 'transaction',
+      verified: true,
+      tools: [
+        { tool: 'claude-code', path: '~/.claude/CLAUDE.md', status: 'written' as const },
+        {
+          tool: 'codex-cli',
+          path: '~/.codex/AGENTS.md',
+          status: 'error' as const,
+          detail: 'Ensemble block missing',
+        },
+      ],
+    }));
     render(<App api={api} />);
     expect(screen.getByRole('heading', { name: 'Your models, working together.' })).toBeTruthy();
     expect(screen.getByRole('checkbox', { name: 'Keep model data up to date' })).toHaveProperty(
@@ -70,6 +83,14 @@ describe('wizard', () => {
     expect(api.apply).not.toHaveBeenCalled();
     await user.click(screen.getByRole('button', { name: 'Apply to selected tools' }));
     expect(await screen.findByRole('heading', { name: 'Your crew is ready.' })).toBeTruthy();
+    const rows = within(screen.getByRole('list', { name: 'Result for each tool' })).getAllByRole(
+      'listitem',
+    );
+    expect(rows.map((row) => row.textContent)).toEqual([
+      'Claude Code written and verified:~/.claude/CLAUDE.md',
+      'Codex CLI error:~/.codex/AGENTS.mdEnsemble block missing',
+    ]);
+    expect(screen.getByRole('alert').textContent).toContain('could not be verified');
     expect(screen.getByRole('button', { name: 'Finish' })).toBeTruthy();
     expect(screen.getByRole('button', { name: 'Back to my crew' })).toBeTruthy();
     await user.click(screen.getByRole('button', { name: 'Revert changes' }));

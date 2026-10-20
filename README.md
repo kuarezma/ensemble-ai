@@ -146,9 +146,14 @@ for revert. A dry-run returns changes, unified diffs and copy exports without cr
 An apply creates backups and a manifest under the **supplied** home's `.ensemble/backups` directory.
 It never runs delegation commands. Reapplying an identical plan creates no transaction.
 
-Eleven clients write to a documented global rules file: Claude Code, Codex CLI, Gemini CLI, opencode,
-Windsurf, Cline, Roo Code, Kiro, Amp, Goose and Qwen Code (paths and sources in `catalog/tools.json`).
-Universal AGENTS.md is an explicit project export. The other 15 clients have either no file-based global
+Twelve clients write to a documented global rules file: Claude Code, Codex CLI, Gemini CLI, Antigravity,
+opencode, Windsurf, Cline, Roo Code, Kiro, Amp, Goose and Qwen Code (paths and sources in `catalog/tools.json`).
+Antigravity uses `~/.gemini/AGENTS.md`; it also reads Gemini CLI's `~/.gemini/GEMINI.md`, so selecting
+both tools gives Antigravity two Ensemble blocks. After Apply, each selected tool's file is reread and the
+result screen lists it as written, skipped (copy export) or error.
+`node scripts/verify-persistence.mjs` (after `npm run build:core`) writes the rules into a throwaway HOME and
+asks each installed CLI whether it knows the crew; CLIs that cannot authenticate there are reported as failed.
+Universal AGENTS.md is an explicit project export. The other 13 clients have either no file-based global
 location (for example Cursor and Warp keep user rules in their own settings) or a path we could not confirm
 from vendor documentation; they have `globalPath:null`, `verified:false`, and their complete rendered rules
 appear in `exports` for manual copying.
@@ -199,8 +204,10 @@ Filesystem checks cannot protect against a hostile process swapping ancestor dir
 Beş adımlı React sihirbazı, ayarlar, EN/TR dil seçimi, açık/koyu tema, güvenli IPC,
 plan önizlemesi ve açık onayla uygulama/geri alma içerir. `npm test`, `npm run typecheck`, `npm run lint` ve
 `npm run build` ile kontrol edilir. Geliştirmede gerçek HOME yerine açıkça belirtilen boş bir deneme
-klasörü kullanılır. Doğrulanamayan 15 istemci için dosyaya otomatik yazılmaz; kopyalanabilir kurallar
-üretilir. Plan erişimleri ve kıtlık değerleri tahminidir, kesin kota iddiası değildir.
+klasörü kullanılır. Doğrulanamayan 13 istemci için dosyaya otomatik yazılmaz; kopyalanabilir kurallar
+üretilir. Antigravity, `~/.gemini/AGENTS.md` dosyasına yazılan 12 istemciden biridir. Uygula
+sonrasında her seçili aracın dosyası yeniden okunur; sonuç ekranı araç başına yazıldı, atlandı veya hata
+satırı gösterir. Plan erişimleri ve kıtlık değerleri tahminidir, kesin kota iddiası değildir.
 
 Masaüstü uygulamasındaki Geri Al, oturumda uygulanan işlemleri geri alır. Yeniden başlatma sonrası
 yedek manifesti ile CLI kullanılabilir. Yerel Playwright kapısı macOS sandbox izni nedeniyle

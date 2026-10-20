@@ -2,7 +2,7 @@ import { readFile } from 'node:fs/promises';
 import { parseArgs } from 'node:util';
 import { CliConfigSchema, EngineInputSchema } from './schemas.js';
 import { generatePlan } from './engine/index.js';
-import { applyChanges, buildApplyPreview, revert } from './apply/index.js';
+import { applyChanges, buildApplyPreview, revert, verifyToolTargets } from './apply/index.js';
 export async function runCLI(
   args: string[],
   stdout: (text: string) => void = console.log,
@@ -53,5 +53,6 @@ export async function runCLI(
     return;
   }
   const manifest = await applyChanges(preview, values.home, projects);
-  stdout(JSON.stringify({ manifest, exports: preview.exports }, null, 2));
+  const tools = await verifyToolTargets(config.plan, config.tools, values.home);
+  stdout(JSON.stringify({ manifest, tools, exports: preview.exports }, null, 2));
 }

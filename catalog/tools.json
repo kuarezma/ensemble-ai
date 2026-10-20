@@ -75,17 +75,25 @@
     "id": "antigravity",
     "name": "Antigravity",
     "vendor": "Google",
-    "platforms": [],
+    "platforms": [
+      "darwin",
+      "win32",
+      "linux"
+    ],
     "format": "markdown",
-    "globalPath": null,
+    "globalPath": {
+      "darwin": ".gemini/AGENTS.md",
+      "win32": "%USERPROFILE%/.gemini/AGENTS.md",
+      "linux": ".gemini/AGENTS.md"
+    },
     "projectPath": null,
-    "verified": false,
+    "verified": true,
     "template": "team.md",
     "subagents": null,
     "cliDelegation": null,
     "headlessCli": null,
-    "source": null,
-    "notes": "Copy rules export only; persistence and delegation not verified."
+    "source": "https://antigravity.google/docs/rules",
+    "notes": "Documented always-active global rules file; ~/.gemini/GEMINI.md is also read but belongs to Gemini CLI. Delegation not verified."
   },
   {
     "id": "cursor",

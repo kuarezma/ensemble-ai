@@ -15,6 +15,7 @@ import {
 } from '../core/schemas.js';
 import { allowed, candidatesFor } from '../core/engine/policy.js';
 import type { Catalog, EnsembleAPI, Preview, Recovery } from '../shared/api.js';
+import type { ToolResult } from '../core/apply/writers.js';
 import { explain } from './explain.js';
 import { useUpdates, UpdateConsent, UpdateSettings, UpdateBanner } from './Updates.js';
 import { platformAdapter } from './platform/index.js';
@@ -53,6 +54,7 @@ export function App({ api = window.ensemble }: { api?: EnsembleAPI }) {
   const [fresh, setFresh] = useState<Model[]>(),
     [confirmed, setConfirmed] = useState<Record<string, string[]>>({});
   const [recoveries, setRecoveries] = useState<Recovery[]>([]);
+  const [toolResults, setToolResults] = useState<ToolResult[]>([]);
   const [candidate, setCandidate] = useState<Plan>();
   const heading = useRef<HTMLHeadingElement>(null),
     settingsHeading = useRef<HTMLHeadingElement>(null),
@@ -1070,7 +1072,33 @@ export function App({ api = window.ensemble }: { api?: EnsembleAPI }) {
                         ✓
                       </div>
                       <h2>{t('ready')}</h2>
-                      <p>{t(manifest ? 'success' : 'unchanged')}</p>
+                      {toolResults.some((r) => r.status === 'error') ? (
+                        <p role="alert" className="error">
+                          {t('toolCheckFailed')}
+                        </p>
+                      ) : (
+                        <p>{t(manifest ? 'success' : 'unchanged')}</p>
+                      )}
+                      {toolResults.length > 0 && (
+                        <ul className="tool-results" aria-label={t('toolResults')}>
+                          {toolResults.map((r) => (
+                            <li key={r.tool} className={r.status === 'error' ? 'error' : undefined}>
+                              <strong>
+                                {catalog?.tools.find((x) => x.id === r.tool)?.name ?? r.tool}
+                              </strong>{' '}
+                              {t(
+                                r.status === 'written'
+                                  ? 'toolWritten'
+                                  : r.status === 'skipped'
+                                    ? 'toolSkipped'
+                                    : 'toolError',
+                              )}
+                              {r.path && <code>{r.path}</code>}
+                              {r.status === 'error' && r.detail && <span>{r.detail}</span>}
+                            </li>
+                          ))}
+                        </ul>
+                      )}
                       <div className="button-row">
                         <button className="primary" disabled={busy} onClick={() => window.close()}>
                           {t('finish')}
@@ -1176,6 +1204,7 @@ export function App({ api = window.ensemble }: { api?: EnsembleAPI }) {
                               void perform(async () => {
                                 const result = await api.apply(preview.id);
                                 setManifest(result.manifestId);
+                                setToolResults(result.tools ?? []);
                                 const available = await reloadRecoveries();
                                 if (!result.verified) {
                                   setPreview(undefined);

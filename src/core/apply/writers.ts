@@ -106,6 +106,55 @@ export async function buildApplyPreview(
   return changes;
 }
 
+export type ToolResult = {
+  tool: string;
+  path: string | null;
+  status: 'written' | 'skipped' | 'error';
+  detail?: string;
+};
+/** Reread each selected tool's global rules file and confirm its managed block carries this plan. */
+export async function verifyToolTargets(
+  rawPlan: Plan,
+  selectedTools: string[],
+  homeDir: string,
+  platform: NodeJS.Platform = process.platform,
+): Promise<ToolResult[]> {
+  const plan = PlanSchema.parse(rawPlan),
+    home = absoluteRoot(homeDir);
+  const results: ToolResult[] = [];
+  for (const id of [...new Set(selectedTools)]) {
+    const tool = tools.find((t) => t.id === id);
+    if (!tool) throw new Error(`Unknown tool: ${id}`);
+    const global = tool.verified
+      ? tool.globalPath?.[platform as 'darwin' | 'linux' | 'win32']
+      : undefined;
+    if (!global) {
+      results.push({ tool: id, path: null, status: 'skipped', detail: 'No global rules file' });
+      continue;
+    }
+    const file = resolveToolPath(home, global);
+    try {
+      await assertSafePath(home, file);
+      const content = await readOptional(file);
+      if (content === null) throw new Error('File missing after apply');
+      const block = managedBlock(content);
+      if (block === null) throw new Error('Ensemble block missing');
+      const expected = updateManagedBlock(null, renderRules(plan, tool, selectedTools)).trimEnd();
+      if (block.replace(/\r\n/g, '\n') !== expected.replace(/\r\n/g, '\n'))
+        throw new Error('Ensemble block does not match this crew');
+      results.push({ tool: id, path: file, status: 'written' });
+    } catch (error) {
+      results.push({
+        tool: id,
+        path: file,
+        status: 'error',
+        detail: error instanceof Error ? error.message : 'Verification failed',
+      });
+    }
+  }
+  return results;
+}
+
 /** Exact paths the catalog-backed writers can produce, including native Claude agents. */
 export function writableTargets(home: string, projects: string[]): Set<string> {
   const targets = new Set<string>();

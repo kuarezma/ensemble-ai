@@ -5,7 +5,13 @@ import { readFile, mkdir, mkdtemp, writeFile, rm } from 'node:fs/promises';
 import path from 'node:path';
 import { models, tools, subscriptions } from '../dist/core/catalog.js';
 import { generatePlan } from '../dist/core/engine/index.js';
-import { buildApplyPreview, applyChanges, verify, revert } from '../dist/core/apply/index.js';
+import {
+  buildApplyPreview,
+  applyChanges,
+  verify,
+  verifyToolTargets,
+  revert,
+} from '../dist/core/apply/index.js';
 const root = path.resolve('out/renderer');
 const output = path.resolve('docs/screenshots');
 await mkdir(output, { recursive: true });
@@ -102,6 +108,7 @@ try {
         case 'preview':
           pending = {
             id: `preview-${++sequence}`,
+            ids: args[0],
             changes: await buildApplyPreview(plan, args[0], home),
           };
           return {
@@ -114,11 +121,19 @@ try {
           };
         case 'apply': {
           if (!pending || args[0] !== pending.id) throw new Error('Expired preview');
-          const changes = pending.changes;
+          const { changes, ids } = pending;
           pending = undefined;
           const manifest = await applyChanges(changes, home);
           applyCount++;
-          return { manifestId: manifest?.id ?? null, verified: await verify(changes) };
+          const toolResults = (await verifyToolTargets(plan, ids, home)).map((r) => ({
+            ...r,
+            path: r.path && '~/' + path.relative(home, r.path),
+          }));
+          return {
+            manifestId: manifest?.id ?? null,
+            verified: await verify(changes),
+            tools: toolResults,
+          };
         }
         case 'revert':
           await revert(args[0], home);
@@ -190,6 +205,14 @@ try {
     if (applyCount !== revertCount) throw new Error('Apply happened before explicit click');
     await page.getByRole('button', { name: 'Apply to selected tools' }).click();
     await page.getByRole('heading', { name: 'Your crew is ready.' }).waitFor();
+    const rows = page.getByRole('list', { name: 'Result for each tool' }).getByRole('listitem');
+    for (const name of ['Claude Code', 'Codex CLI'])
+      if (
+        !(await rows.filter({ hasText: name }).filter({ hasText: 'written and verified' }).count())
+      )
+        throw new Error('Missing verified tool row: ' + name);
+    if (await rows.filter({ hasText: 'error:' }).count())
+      throw new Error('Tool verification error');
     await inspect('06-success');
     await page.getByRole('button', { name: 'Revert changes' }).click();
     await page

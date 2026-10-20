@@ -5,8 +5,8 @@ import { z } from 'zod';
 import { absoluteRoot, assertSafePath, within } from './paths.js';
 import { assertManagedOnlyChange, managedBlock } from './markers.js';
 import { readOptional, writableTargets, type FileChange } from './writers.js';
-export { buildApplyPreview } from './writers.js';
-export type { FileChange, ApplyPreview } from './writers.js';
+export { buildApplyPreview, verifyToolTargets } from './writers.js';
+export type { FileChange, ApplyPreview, ToolResult } from './writers.js';
 const EntrySchema = z.object({
   path: z.string(),
   backup: z
